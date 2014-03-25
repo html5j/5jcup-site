@@ -17,12 +17,4 @@ test:
     identity_map_enabled: true
 
 production:
-  sessions:
-    default:
-      database: html5jcup_production
-      # heroku
-      # uri: <%= ENV['MONGOHQ_URL'] %>
-      hosts:
-        - localhost:27017
-  options:
-    identity_map_enabled: true
+  uri: <%= ENV['MONGOHQ_URL'] %>

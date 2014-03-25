@@ -70,5 +70,10 @@ Locomotive.configure do |config|
   # config.rack_cache = false
   #
   # Note: by default, rack/cache is disabled in the Heroku platform
+  config.hosting = {
+    :target     => :heroku,
+    :api_key    => ENV['HEROKU_API_KEY'],
+    :app_name   => ENV['HEROKU_APP_NAME']
+  }
 
 end
