@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails'
+gem 'rails', '~> 3.2.16'
 gem 'rails-i18n'
 
 gem 'locomotive_cms', '~> 2.4.1', :require => 'locomotive/engine'
