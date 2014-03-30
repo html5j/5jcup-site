@@ -6,7 +6,8 @@ module Auth
       before_filter :authcheck
     end
     def authcheck
-        logger.info "Auth page"
+      @page ||= self.locomotive_page
+      authenticate_user! if @page.require_login
     end
   end
 end
