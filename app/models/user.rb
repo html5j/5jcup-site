@@ -1,4 +1,4 @@
-class User
+class User < Liquid::Drop
   include Mongoid::Document
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
