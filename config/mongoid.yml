@@ -16,6 +16,11 @@ test:
   options:
     identity_map_enabled: true
 
+staging:
+  sessions:
+    default:
+      uri: <%= ENV['MONGOHQ_URL'] %>
+
 production:
   sessions:
     default:
