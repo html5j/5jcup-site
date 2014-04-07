@@ -7,7 +7,7 @@ module Auth
     end
     def authcheck
       @page ||= self.locomotive_page
-      authenticate_user! if @page.require_login
+      authenticate_user! if @page && @page.require_login
     end
   end
 end
