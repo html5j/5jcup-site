@@ -1,9 +1,14 @@
 Html5jcup::Application.routes.draw do
-  
-  devise_for :users
+
+  devise_for :users, :controllers => {
+    :registrations => 'users/registrations',
+    :confirmations => 'users/confirmations',
+    :sessions => 'users/sessions'
+  }
+
 
   mount Locomotive::Engine => '/locomotive', as: 'locomotive' # you can change the value of the path, by default set to "/locomotive"
-      
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
