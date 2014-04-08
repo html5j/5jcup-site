@@ -16,14 +16,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   # POST /resource
   def create
-    @page ||= self.locomotive_page('/userregistration')
     build_resource(params.fetch(resource_name, {}))
 
     resource_saved = resource.save
     yield resource if block_given?
     if resource_saved
       if resource.active_for_authentication?
-        set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
         respond_with resource, location: after_sign_up_path_for(resource)
       else
@@ -36,6 +34,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         end
       end
     else
+      @page ||= self.locomotive_page('/userregistration')
       clean_up_passwords resource
       respond_to do |format|
         format.html {
@@ -64,5 +63,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # A call to #empty? forces the session to be loaded.
     session.empty?
     session.keys.grep(/^devise\./).each { |k| session.delete(k) }
+  end
+  def after_sign_up_path_for(resource)
+    '/registrationfinished'
   end
 end
