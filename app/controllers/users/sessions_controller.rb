@@ -17,18 +17,4 @@ class Users::SessionsController < Devise::SessionsController
       }
     end
   end
-
-  def devise_error_messages!
-    return "" if self.resource.errors.empty?
-
-    messages = self.resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
-    html = <<-HTML
-    <div id="error_explanation">
-      <h2>エラーが発生しました</h2>
-      <ul>#{messages}</ul>
-    </div>
-    HTML
-
-    html.html_safe
-  end
 end
