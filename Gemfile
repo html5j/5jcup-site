@@ -25,6 +25,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'rb-fsevent', '0.9.4', :require => false
+  gem 'rspec-nc'
 end
 
 
