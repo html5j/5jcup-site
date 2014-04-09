@@ -1,5 +1,6 @@
 class Work
   include Mongoid::Document
+  validates_presence_of :title
   field :title, type: String
   field :description, type: String
   field :award_ids, type: Array
