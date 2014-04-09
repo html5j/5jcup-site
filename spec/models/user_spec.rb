@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe User do
+
   describe '.new' do
     context 'given valid attributes' do
       subject { User.new(:email => 'hal@plants-web.jp', :password => 'password', :name => 'ハル') }

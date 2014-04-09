@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe Work do
+  describe '.all' do
+    before do
+      FactoryGirl.create(:work)
+    end
+    subject { Work.all }
+    it { should have(1).items }
+  end
+
   describe '.new' do
     context 'given valid attributes' do
       subject { Work.new(:title => 'a', :description => 'a') }
