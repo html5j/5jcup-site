@@ -10,7 +10,6 @@ class Users::SessionsController < Devise::SessionsController
     clean_up_passwords(resource)
     @page ||= self.locomotive_page('/loginpage')
 
-    logger.debug flash[:alert]
     respond_to do |format|
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'user' => self.resource, 'error' => flash[:alert]}))
