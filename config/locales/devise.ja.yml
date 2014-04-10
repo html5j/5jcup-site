@@ -7,12 +7,13 @@ ja:
 #      already_confirmed: "was already confirmed"
       not_locked: "は凍結されていません"
 #      not_locked: "was not locked"
+      not_saved: "更新できませんでした"
 
   devise:
     failure:
-      unauthenticated: 'ログインしてください。'
+      unauthenticated: 'この前に進むにはログインが必要です。ログインを行なって下さい。'
 #      unauthenticated: 'You need to sign in or sign up before continuing.'
-      unconfirmed: '本登録を行ってください。'
+      unconfirmed: 'メールアドレスの確認が終わっていません。メールで送信した内容を確認し、本登録を行ってください。'
 #      unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'あなたのアカウントは凍結されています。'
 #      locked: 'Your account is locked.'
