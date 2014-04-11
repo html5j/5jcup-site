@@ -10,6 +10,7 @@ class DlController < ApplicationController
     #logger.debug(@page.render(self.locomotive_context({})))
     context = self.locomotive_context({})
     url = context['material'][type]
+    Dl.create({:userid => current_user.id, :email => current_user.email, :url => url, :material => slug})
     render :text => url
     #redirect_to url
   end
