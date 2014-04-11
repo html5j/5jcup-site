@@ -1,0 +1,2 @@
+class DlController < ApplicationController
+end
