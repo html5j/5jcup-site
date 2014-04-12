@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Work do
+  it {should validate_presence_of(:title)}
   describe '.all' do
     before do
       FactoryGirl.create(:work)
