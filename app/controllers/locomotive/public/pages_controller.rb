@@ -25,10 +25,8 @@ module Locomotive
 
       def show
         if (current_user)
-          logger.debug('**********' + current_user.email)
-          render_locomotive_page(nil, {'useremail' => current_user.email})
+          render_locomotive_page(nil, {'username' => current_user.name})
         else
-          logger.debug('**********nologin')
           render_locomotive_page
         end
       end
