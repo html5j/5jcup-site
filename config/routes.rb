@@ -3,7 +3,8 @@ Html5jcup::Application.routes.draw do
   devise_for :users, :controllers => {
     :registrations => 'users/registrations',
     :confirmations => 'users/confirmations',
-    :sessions => 'users/sessions'
+    :sessions => 'users/sessions',
+    :passwords => 'users/passwords'
   }
 
 
