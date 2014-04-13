@@ -24,7 +24,13 @@ module Locomotive
       end
 
       def show
-        render_locomotive_page
+        if (current_user)
+          logger.debug('**********' + current_user.email)
+          render_locomotive_page(nil, {'useremail' => current_user.email})
+        else
+          logger.debug('**********nologin')
+          render_locomotive_page
+        end
       end
 
       def edit

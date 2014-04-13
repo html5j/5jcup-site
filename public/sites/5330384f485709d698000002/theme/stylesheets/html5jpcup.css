@@ -23,6 +23,7 @@ header h1{
 
 header nav ul {
     list-style-type: none;
+
 }
 header nav ul > li{
     width:16.6%;
@@ -32,7 +33,7 @@ header nav ul > li{
 }
 
 header nav ul > li >a{
-    padding: 21px 0;
+    padding: 17px 0;
     display: block;;
     color: #000;
     font-weight: 500;
@@ -59,10 +60,40 @@ h2 {
     color:#D01230;
 }
 
+.userBox {
+  float:right;
+}
 
+.userBox li{
+  float:right;
+  font-size:11px;
+  margin:8px 5px 0 0;
+}
+
+.userBox li a{
+  padding:5px 8px;
+  border:1px solid #666;
+  display:block;
+  color:#fff;
+}
+
+.userBox li.login a{
+  padding:5px 30px 5px 8px;
+   background: url(/sites/5330384f485709d698000002/theme/images/login.png)top right no-repeat;
+  border:1px solid #666;
+  display:block;
+}
+
+.userBox li.logout a{
+  padding:5px 30px 5px 8px;
+   background: url(/sites/5330384f485709d698000002/theme/images/logout.png)top right no-repeat;
+  border:1px solid #666;
+  display:block;
+}
 
 .snsBox {
      float: right;
+  
 }
 
 
@@ -78,6 +109,7 @@ h2 {
     display: inline-block;
     vertical-align: top;
 } 
+
 
 
 
@@ -127,14 +159,21 @@ header  .headimg {
 
 }
 
-.headImgLogin .btn01 {
+.btn01 {
   background: #ff0000;
   padding: 10px 0px;
   border: none;
   color: #fff;
   font-size: 18px;
-  width: 90%;
+  width: 100%;
   margin-bottom: 10px;
+}
+
+
+.headImgLogin .btn01 {
+ 
+  width: 90%;
+
 }
 
 
@@ -166,6 +205,7 @@ header  .headimg {
 header  #navBox {
     width: 100%;
     background: #e1e1e1;
+     border-bottom: 5px solid #cdcdcd;
 }
 
  .menu-toggle {
@@ -182,7 +222,7 @@ header  #navBox {
 }
 
 main {
-    padding: 50px 0;
+    padding: 50px 0 0;
 
 
 }
@@ -190,7 +230,53 @@ main {
 section {
     padding: 0px 0px 70px 0px;
 }
+/*
+section.award {
+  clear:both;
+  margin-bottom:20px;
+  border:1px solid #ccc;
+  overflow:hidden;
+  padding:20px;
+}
 
+.short_description {
+    margin-bottom:20px;
+}
+
+.presented_by p {
+  margin-top:20px;
+ font-size:16px;
+  font-weight:bold;
+}
+
+div.prize {
+  margin-bottom:5px;
+
+}
+
+div.supplementary_prize {
+    margin-bottom:20px;
+}
+*/
+dl.prize {
+background: #f5f5f5;
+padding: 20px;
+font-size: 18px;
+}
+dl.prizel {
+margin-bottom: 20px;
+}
+dl.prize dt {
+color: #D01230;
+width: 100px;
+float: left;
+padding: 5px 5px 5px 10px;
+}
+
+dl.prize dd {
+margin-bottom: 10px;
+padding: 5px 5px 5px 110px;
+}
 
 
 
@@ -215,7 +301,7 @@ dl.news > dd {
 .flow {
   list-style-type: none;
   background: url(/sites/5330384f485709d698000002/theme/images/arrow.png)top left no-repeat;
-  padding-left: 80px;
+  padding: 0 20px 0 120px;
   min-height: 300px;
 }
 
@@ -297,6 +383,54 @@ dl.news > dd {
     height: 120px;
 }
 
+table {
+border-collapse: separate;
+border-spacing: 0;
+border-width: 1px 0 0 1px;
+margin-bottom: 24px;
+width: 100%;
+}
+table, th, td {
+border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+table th {
+background:#eeeeee;
+  padding:10px;
+}
+
+table td {
+  padding:10px;
+}
+
+.links {
+  margin-bottom:20px;
+}
+
+.links a {
+  margin-right:10px;
+}
+
+.unit {
+  width: 960px ;
+  margin: 0 auto 30px ;
+  overflow: hidden ;
+}
+
+.unit .unit-facebook {
+  width: 480px ;
+  margin: 0 ;
+  padding: 0 10px ;
+  float: left ;  
+}
+.unit .unit-twitter {
+  width: 480px ;
+  margin: 0 ;
+  padding: 0 10px ;
+  float: left ;
+}
+
+
 footer {
     background: #000;
     color: #f8f8f8;
@@ -311,4 +445,11 @@ footer h5,
 footer h6,
 footer p  {
     color: #f8f8f8;
+}
+.form-description {
+    font-size: 0.8em;
+    color: gray;
+    padding: 0;
+    padding-left: 0.5em;
+    margin: 0;
 }
