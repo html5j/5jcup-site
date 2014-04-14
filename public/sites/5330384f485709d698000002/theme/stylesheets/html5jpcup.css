@@ -34,8 +34,8 @@ header nav ul > li{
 
 header nav ul > li >a{
     padding: 17px 0;
-    display: block;;
-    color: #000;
+    display: block;
+    color: #fff;
     font-weight: 500;
 }
 
@@ -100,8 +100,7 @@ h2 {
 .snsBox .snsList {
     margin-bottom: 0;
     list-style-type: none;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 15px 10px ;
 }
 
 
@@ -110,7 +109,9 @@ h2 {
     vertical-align: top;
 } 
 
-
+.fb-like span {
+    vertical-align: top !important ;
+}
 
 
 header  .headimg {
@@ -129,7 +130,7 @@ header  .headimg {
 
 .headImgLogo {
   float: left;
-  background: #fff;
+  background: rgba(255,255,255,0.75);
   margin: 0px 5%;
   height: 300px;
   width: 40%;
@@ -204,8 +205,8 @@ header  .headimg {
 
 header  #navBox {
     width: 100%;
-    background: #e1e1e1;
-     border-bottom: 5px solid #cdcdcd;
+    background: #000;
+    border-bottom: 1px solid #cdcdcd;
 }
 
  .menu-toggle {
@@ -222,9 +223,11 @@ header  #navBox {
 }
 
 main {
-    padding: 50px 0 0;
+    padding: 100px 0 50px ;
+}
 
-
+.top {
+    padding: 50px 0 ;
 }
 
 section {
@@ -278,7 +281,12 @@ margin-bottom: 10px;
 padding: 5px 5px 5px 110px;
 }
 
-
+.news {
+  padding: 5px 20px 5px 15px ;
+  border-left: 5px #D01230 solid ;
+  max-width: 80% ;
+  margin: 0 auto ;
+}
 
 dl.news > dt {
     display: inline-block;
@@ -314,6 +322,10 @@ dl.news > dd {
 .flow li span {
   color:#ff0000;
   margin-right: 20px;
+}
+
+.flow .flow-main {
+  padding: 65px 20px ;
 }
 
 .more a{
