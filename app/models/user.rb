@@ -7,6 +7,7 @@ class User < Liquid::Drop
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
+
   field :name,               :type => String
   ## Database authenticatable
   field :email,              :type => String, :default => ""
@@ -15,6 +16,7 @@ class User < Liquid::Drop
   ## Recoverable
   field :reset_password_token,   :type => String
   field :reset_password_sent_at, :type => Time
+
 
   ## Rememberable
   field :remember_created_at, :type => Time

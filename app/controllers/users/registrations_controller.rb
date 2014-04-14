@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource}))
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'login_fb' => user_omniauth_authorize_path(:facebook)}))
       }
     end
   end

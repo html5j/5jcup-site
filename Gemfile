@@ -7,6 +7,7 @@ gem 'rails-i18n'
 gem 'locomotive_cms', '~> 2.4.1', :require => 'locomotive/engine'
 
 gem 'locomotive-heroku', '~> 0.1.0', :require => 'locomotive/heroku'
+gem 'omniauth-facebook'
 group :production, :staging do
   gem 'rails_12factor'
   gem 'thin'

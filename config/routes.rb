@@ -1,11 +1,15 @@
 Html5jcup::Application.routes.draw do
 
+  match '/auth/:provider/callback' => 'user_accounts#create'
+
   devise_for :users, :controllers => {
     :registrations => 'users/registrations',
     :confirmations => 'users/confirmations',
     :sessions => 'users/sessions',
-    :passwords => 'users/passwords'
+    :passwords => 'users/passwords',
   }
+
+  resources :user_accounts, :only => [:index, :create, :destroy]
 
 
   mount Locomotive::Engine => '/locomotive', as: 'locomotive' # you can change the value of the path, by default set to "/locomotive"
