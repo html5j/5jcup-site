@@ -46,12 +46,12 @@ class AccountsController < ApplicationController
     end
   end
 
-  #sections 'settings'
+  sections 'settings'
 
   def show
-
+    @count = User.count
+    @tmp_count = User.where(confirmed_at:nil).count
     logger.debug Thread.current[:account]
-    render :text => 'hoge'
   end
 
   protected
