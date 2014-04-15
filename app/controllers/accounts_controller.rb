@@ -51,7 +51,6 @@ class AccountsController < ApplicationController
   def show
     @count = User.count
     @tmp_count = User.where(confirmed_at:nil).count
-    logger.debug Thread.current[:account]
   end
 
   protected
