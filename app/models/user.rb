@@ -1,6 +1,7 @@
 class User < Liquid::Drop
   include Mongoid::Document
   validates_presence_of :name
+  has_many :user_accounts, class_name: "UserAccount"
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable

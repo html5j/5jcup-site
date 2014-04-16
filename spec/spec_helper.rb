@@ -50,6 +50,15 @@ Spork.prefork do
       DatabaseCleaner[:mongoid].clean
       Warden.test_reset!
     end
+    OmniAuth.config.test_mode = true
+    omniauth_hash =
+        {:provider => "facebook",
+         :uid      => "1234",
+         :info   => {:name       => "John Doe",
+                     :email      => "johndoe@email.com"},
+         :credentials => {:token => "testtoken234tsdf"}}
+
+    OmniAuth.config.add_mock(:facebook, omniauth_hash)
   end
 
 end
@@ -147,6 +156,16 @@ RSpec.configure do |config|
     DatabaseCleaner[:mongoid].clean
     Warden.test_reset!
   end
+
+  OmniAuth.config.test_mode = true
+  omniauth_hash =
+      {:provider => "facebook",
+       :uid      => "1234",
+       :info   => {:name       => "John Doe",
+                   :email      => "johndoe@email.com"},
+       :credentials => {:token => "testtoken234tsdf"}}
+
+  OmniAuth.config.add_mock(:facebook, omniauth_hash)
 end
 Spork.each_run do
   # This code will be run each time you run your specs.

@@ -1,5 +1,13 @@
 require 'spec_helper'
 
 describe UserAccount do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.all' do
+    before do
+      user = FactoryGirl.create(:user)
+      #FactoryGirl.create(:user_account, user: user)
+    end
+    subject { User.find(1) }
+    it { should have(1).accounts }
+  end
+
 end
