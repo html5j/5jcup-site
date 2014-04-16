@@ -30,6 +30,7 @@ group :test do
   gem 'rb-fsevent', '0.9.4', :require => false
   gem 'rspec-nc'
   gem 'shoulda-matchers'
+  gem 'fabrication'
 end
 
 
