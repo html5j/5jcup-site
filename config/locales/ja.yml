@@ -196,7 +196,7 @@ ja:
   activemodel:
     errors:
       <<: *errors
-  activerecord:
+  mongoid:
     errors:
       <<: *errors
     attributes:
@@ -205,3 +205,4 @@ ja:
         email: 'メールアドレス'
         password: 'パスワード'
         password_confirmation: '確認用メールアドレス'
+        current_password: '現在のパスワード'
