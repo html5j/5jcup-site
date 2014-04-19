@@ -201,7 +201,7 @@ ja:
       <<: *errors
     attributes:
       user:
-        name: '氏名'
+        name: 'お名前'
         email: 'メールアドレス'
         password: 'パスワード'
         password_confirmation: '確認用メールアドレス'

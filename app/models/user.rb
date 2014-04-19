@@ -1,4 +1,4 @@
-class User < Liquid::Drop
+class User < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :name
   # Include default devise modules. Others available are:

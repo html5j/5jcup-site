@@ -26,7 +26,7 @@ module Liquid
 
       private
       def get_form_header(context)
-        result = '<form method="POST" ' + @class_string + 'action="' + @form_action + '"' + @upload_info + '>'
+        result = '<form method="POST" accept-charset="UTF-8" ' + @class_string + @id_string + 'action="' + @form_action + '"' + @upload_info + '>'
         if @activity == "edit"
           result += '<input type="hidden" name="_method" value="PUT"/>'
         end
@@ -53,6 +53,7 @@ module Liquid
         set_controller_action
         set_form_action(context)
         set_class
+        set_id
         set_upload
       end
       def set_controller_action
@@ -69,7 +70,7 @@ module Liquid
         if @activity == "edit"
           @form_action = object_url @model
         elsif @activity == "new"
-          @form_action = "/" + @model.class.name.tableize.pluralize + "/"
+          @form_action = "/" + @model.class.name.tableize.pluralize
         else
           syntax_error
         end
@@ -82,12 +83,20 @@ module Liquid
         end
 
       end
-      def set_class
-        @class_string = ""
-        unless @options["class"].nil?
-          @class_string = 'class="' + @options["class"] + '" '
+      def set_id
+        if @options["id"].nil?
+          @id_string = 'id="' + @activity + "_" + @model.class.name.tableize.singularize + '" '
+        else
+          @id_string += 'id="' + @options["id"] + '" '
         end
+      end
 
+      def set_class
+        @class_string = 'class="' + @activity + "_" + @model.class.name.tableize.singularize
+        unless @options["class"].nil?
+          @class_string += ' ' + @options["class"]
+        end
+        @class_string += '" '
       end
 
       def set_upload
