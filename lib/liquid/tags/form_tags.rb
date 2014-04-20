@@ -30,10 +30,20 @@ module Liquid
       end
       def input_field(input, field, options)
         value = input.send(field.to_sym)
-        "<input autofocus=\"autofocus\" id=\"#{modelname_single(input)}_#{field}\" keyev=\"true\" mouseev=\"true\" name=\"#{goodname(input)}[#{field}]\" type=\"text\" value=\"#{value}\" >"
+        #"<input autofocus=\"autofocus\" id=\"#{modelname_single(input)}_#{field}\" keyev=\"true\" mouseev=\"true\" name=\"#{modelname_single(input)}[#{field}]\" type=\"text\" value=\"#{value}\" >"
+        options_default = {id:field_id(input, field), keyenv:true, mouseev:true, name:field_name(input, field), type:"text", value:value }
+        opts = options_default.merge(options)
+        tag(:input, opts)
       end
       def email_field(input, field, options)
         self.input_field(input,field, options.merge({"type"=>"email"}))
+      end
+      def password_field(input, field, options)
+        self.input_field(input,field, options.merge({"type"=>"password", value:""}))
+      end
+      def submit(input, field, options)
+        options.merge!({type:'submit'})
+        tag(:input, options)
       end
       def drop_class_to_table_item(clazz)
         match = /_drops/.match clazz.name.tableize
@@ -42,6 +52,9 @@ module Liquid
       private
       def field_id(model_instance, field_name)
         modelname_single(model_instance) + "_" + field_name
+      end
+      def field_name(model_instance, field_name)
+        modelname_single(model_instance) + "[" + field_name + "]"
       end
       def modelname_single(model_instance)
         model_instance.class.name.tableize.singularize
