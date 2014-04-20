@@ -206,3 +206,14 @@ ja:
         password: 'パスワード'
         password_confirmation: '確認用メールアドレス'
         current_password: '現在のパスワード'
+      work:
+        title: '作品タイトル'
+        description: '作品詳細'
+        award_ids: '賞の選択'
+        tested_environment: 'テストした環境'
+        url: '作品URL'
+        technical_appeal_point: '技術的なアピールポイント'
+        plan_appeal_point: '企画上のアピールポイント'
+        remarks: '自由記入欄'
+        published: '公開/非公開'
+

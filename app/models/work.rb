@@ -1,4 +1,4 @@
-class Work
+class Work < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :title
   field :title, type: String

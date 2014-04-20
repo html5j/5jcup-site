@@ -9,7 +9,7 @@ module Liquid
       def render(context)
         p @handle
         p @options
-        @model =  context['user']
+        @model =  context[@handle]
         set_variables context
         render_form context
         #form_for (context[@handle], @options) do |f|
