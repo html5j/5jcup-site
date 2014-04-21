@@ -12,7 +12,4 @@ class Work < Clot::BaseDrop
   field :published, type: Boolean
   belongs_to :user
 
-  def s_id
-    self._id.to_s
-  end
 end

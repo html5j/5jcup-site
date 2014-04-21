@@ -13,10 +13,15 @@ class WorksController < ApplicationController
   def index
     @page ||= self.locomotive_page('/worksindex')
     works = current_user.works
+    hworks = {}
+    works.each{|item|
+      hworks[item._id.to_s] = item
+    }
 
+    logger.debug(hworks)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'works' => works}))
+         render :inline => @page.render(self.locomotive_context({ 'works' => hworks}))
       }
     end
   end
