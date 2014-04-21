@@ -54,6 +54,7 @@ class WorksController < ApplicationController
     @page ||= self.locomotive_page('/worksshow')
     work = Work.find(params['id'])
     editable = (work.user == current_user)
+    work =  nil if (work.user != current_user && !work.published)
     respond_to do |format|
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable}))
