@@ -21,7 +21,7 @@ class WorksController < ApplicationController
     logger.debug(hworks)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'works' => hworks}))
+         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => current_user.name}))
       }
     end
   end
@@ -82,7 +82,7 @@ class WorksController < ApplicationController
   def awards
     return @award unless @award.nil?
     award_content = current_site.content_types.where(slug: 'awards').first
-    @awards = award_content.entries.sort{|a,b|
+    awards = award_content.entries.sort{|a,b|
       if (a['order'].nil? && a['order'].nil?)
         if (a['prize'].nil? && a['prize'].nil?)
           a['title'] <=> a['title']
@@ -101,6 +101,15 @@ class WorksController < ApplicationController
         a['order'] <=> b['order']
       end
     }
+    @awards = {}
+    awards.each{|award|
+      if @awards[award.category].nil?
+        @awards[award.category] = [award]
+      else
+        @awards[award.category] << award
+      end
+    }
+    @awards
   end
   def error_messages(resource)
     return "" if resource.errors.empty?

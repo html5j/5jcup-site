@@ -17,7 +17,8 @@ module Liquid
       def render(context)
         @model =  context[@options['model']]
         @context = context
-        field = @options.delete 'field'
+        #field = @options.delete 'field'
+        field = @options['field']
         self.send(@handle.to_sym, @model, field, @options)
       end
 
@@ -39,12 +40,13 @@ module Liquid
       def password_field(input, field, options)
         self.input_field(input,field, options.merge({"type"=>"password", value:""}))
       end
-      def check_box(input, field, options)
+      def optionlist(input, field, options_org, isradio=false)
+        options = options_org.clone
         values = input.send(field.to_sym)
         sel_key = options.delete('select_list')
         select_list = @context[sel_key]
 
-        options['type']='checkbox'
+        options['type']= isradio ? 'radio' : 'checkbox'
         options['name']=field_name(input, field) + '[]'
         options['class']=field_id(input, field)
         if (select_list.nil?)
@@ -53,13 +55,8 @@ module Liquid
           # todo should remove this because this contains business logic
           select_list.map{|item|
             if values.nil?
-              p '    values is nil'
               options['checked'] = false
             else
-              p '    values is not nil'
-              p values
-              p item._id
-              p values.include?(item._id.to_s)
               options['checked'] = values.include?(item._id.to_s)
             end
             options['id'] = item._id
@@ -71,6 +68,12 @@ module Liquid
             '<li id="award_' + item._id + '">' + tag(:input, options) + title + '</li>'
           }.join
         end
+      end
+      def check_box(input, field, options)
+        optionlist(input, field, options, false)
+      end
+      def radio_button(input, field, options)
+        optionlist(input, field, options, true)
       end
       def text_area(input, field, options)
         value = input.send(field.to_sym)
