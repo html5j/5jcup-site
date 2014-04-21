@@ -15,11 +15,9 @@ module Liquid
       # {% form_tag label, model:user, field:name %}<br />
       #
       def render(context)
-        p @handle
-        p @options
         @model =  context[@options['model']]
+        @context = context
         field = @options.delete 'field'
-        p @model
         self.send(@handle.to_sym, @model, field, @options)
       end
 
@@ -41,14 +39,44 @@ module Liquid
       def password_field(input, field, options)
         self.input_field(input,field, options.merge({"type"=>"password", value:""}))
       end
+      def check_box(input, field, options)
+        values = input.send(field.to_sym)
+        sel_key = options.delete('select_list')
+        select_list = @context[sel_key]
+
+        options['type']='checkbox'
+        options['name']=field_name(input, field)
+        options['class']=field_id(input, field)
+        if (select_list.nil?)
+          tag(:input, options)
+        else
+          select_list.map{|item|
+            if values.nil?
+              options['checked'] = false
+            else
+              options['checked'] = values.include?(item._id)
+            end
+            options['id'] = item._id
+            prizetext = item.prize ? content_tag(:span, '賞金あり', class:"prize") : ""
+            subprizetext = item.supplementary_prize ? content_tag(:span, '副賞あり', class:"supplementary_prize") : ""
+            title = item.title + prizetext +  subprizetext
+
+            options['value']=item._id
+            '<li id="award_' + item._id + '">' + tag(:input, options) + title + '</li>'
+          }.join
+        end
+      end
+
       def submit(input, field, options)
         options.merge!({type:'submit'})
         tag(:input, options)
       end
+
       def drop_class_to_table_item(clazz)
         match = /_drops/.match clazz.name.tableize
         match.pre_match
       end
+
       private
       def field_id(model_instance, field_name)
         modelname_single(model_instance) + "_" + field_name
