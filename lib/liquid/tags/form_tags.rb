@@ -45,16 +45,22 @@ module Liquid
         select_list = @context[sel_key]
 
         options['type']='checkbox'
-        options['name']=field_name(input, field)
+        options['name']=field_name(input, field) + '[]'
         options['class']=field_id(input, field)
         if (select_list.nil?)
           tag(:input, options)
         else
+          # todo should remove this because this contains business logic
           select_list.map{|item|
             if values.nil?
+              p '    values is nil'
               options['checked'] = false
             else
-              options['checked'] = values.include?(item._id)
+              p '    values is not nil'
+              p values
+              p item._id
+              p values.include?(item._id.to_s)
+              options['checked'] = values.include?(item._id.to_s)
             end
             options['id'] = item._id
             prizetext = item.prize ? content_tag(:span, '賞金あり', class:"prize") : ""
@@ -65,6 +71,12 @@ module Liquid
             '<li id="award_' + item._id + '">' + tag(:input, options) + title + '</li>'
           }.join
         end
+      end
+      def text_area(input, field, options)
+        value = input.send(field.to_sym)
+        options_default = {id:field_id(input, field), name:field_name(input, field)}
+        opts = options_default.merge(options)
+        content_tag(:textarea, value, opts)
       end
 
       def submit(input, field, options)

@@ -2,6 +2,7 @@ class WorksController < ApplicationController
   include Locomotive::Routing::SiteDispatcher
   include Locomotive::Render
   include Locomotive::ActionController::LocaleHelpers
+  include ActionView::Helpers::TagHelper
 
   before_filter :require_site
   before_filter :authenticate_user!
@@ -11,7 +12,7 @@ class WorksController < ApplicationController
 
   def index
     @page ||= self.locomotive_page('/worksindex')
-    works = Work.where({user_id:current_user.id})
+    works = current_user.works
 
     respond_to do |format|
       format.html {
@@ -22,6 +23,57 @@ class WorksController < ApplicationController
 
   def new
     @page ||= self.locomotive_page('/worksedit')
+    work = Work.new
+    respond_to do |format|
+      format.html {
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards}))
+      }
+    end
+  end
+
+
+  def create
+    @work = Work.new(params['work'])
+    @work.user = current_user
+    logger.debug @work
+    if @work.save
+      logger.debug '**success'
+      redirect_to :action => 'show', :id => @work.id
+    else
+      errors = error_messages(@work)
+      @page ||= self.locomotive_page('/worksedit')
+      respond_to do |format|
+        format.html {
+           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors}))
+        }
+      end
+    end
+  end
+
+  def show
+    @page ||= self.locomotive_page('/worksshow')
+    work = Work.find(params['id'])
+    respond_to do |format|
+      format.html {
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards}))
+      }
+    end
+  end
+
+  def edit
+    @page ||= self.locomotive_page('/worksedit')
+    work = Work.find(params['id'])
+    work.attributes = params['work']
+    respond_to do |format|
+      format.html {
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards}))
+      }
+    end
+  end
+
+  private
+  def awards
+    return @award unless @award.nil?
     award_content = current_site.content_types.where(slug: 'awards').first
     @awards = award_content.entries.sort{|a,b|
       if (a['order'].nil? && a['order'].nil?)
@@ -42,11 +94,23 @@ class WorksController < ApplicationController
         a['order'] <=> b['order']
       end
     }
-    work = Work.new
-    respond_to do |format|
-      format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => @awards}))
-      }
-    end
   end
+  def error_messages(resource)
+    return "" if resource.errors.empty?
+
+    messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
+    sentence = I18n.t("errors.messages.not_saved",
+                      count: resource.errors.count,
+                      resource: resource.class.model_name.human.downcase)
+
+    html = <<-HTML
+    <div id="error_explanation">
+      <h2>#{sentence}</h2>
+      <ul>#{messages}</ul>
+    </div>
+    HTML
+
+    html.html_safe
+  end
+
 end
