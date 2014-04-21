@@ -31,7 +31,7 @@ class WorksController < ApplicationController
     work = Work.new
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => current_user.name}))
       }
     end
   end
@@ -49,7 +49,7 @@ class WorksController < ApplicationController
       @page ||= self.locomotive_page('/worksedit')
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors}))
+           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors, 'username' => current_user.name}))
         }
       end
     end
@@ -62,7 +62,7 @@ class WorksController < ApplicationController
     work =  nil if (work.user != current_user && !work.published)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => current_user.name}))
       }
     end
   end
@@ -73,7 +73,7 @@ class WorksController < ApplicationController
     work.attributes = params['work']
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => current_user.name}))
       }
     end
   end
