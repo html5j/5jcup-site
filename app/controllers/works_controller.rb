@@ -5,7 +5,7 @@ class WorksController < ApplicationController
   include ActionView::Helpers::TagHelper
 
   before_filter :require_site
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => ['show']
 
 
   helper Locomotive::BaseHelper
@@ -53,9 +53,10 @@ class WorksController < ApplicationController
   def show
     @page ||= self.locomotive_page('/worksshow')
     work = Work.find(params['id'])
+    editable = (work.user == current_user)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable}))
       }
     end
   end
