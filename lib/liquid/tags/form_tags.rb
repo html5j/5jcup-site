@@ -60,7 +60,7 @@ module Liquid
               options['checked'] = values.include?(item._id.to_s)
             end
             options['id'] = item._id
-            prizetext = item.prize ? content_tag(:span, '賞金あり', class:"prize") : ""
+            prizetext = item.prize ? content_tag(:span, number_to_jpy(item.prize.to_i) + '円', class:"prize") : ""
             subprizetext = item.supplementary_prize ? content_tag(:span, '副賞あり', class:"supplementary_prize") : ""
             title = item.title + prizetext +  subprizetext
 
@@ -103,6 +103,15 @@ module Liquid
         model_instance.class.name.tableize.singularize
       end
 
+      def number_to_jpy(number)
+        if (number > 10000)
+          (number / 10000).floor.to_s + '万' + number_to_jpy(number % 10000)
+        elsif (number > 1000)
+          (number / 1000).floor.to_s + '千' + (number % 1000)
+        else
+          number == 0 ? "" : number.to_s
+        end
+      end
     end
     ::Liquid::Template.register_tag('form_tag', FormTags)
   end
