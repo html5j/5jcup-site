@@ -5,7 +5,7 @@ class WorksController < ApplicationController
   include ActionView::Helpers::TagHelper
 
   before_filter :require_site
-  before_filter :authenticate_user!, :except => ['show']
+  before_filter :authenticate_user!, :except => ['show', 'all']
 
 
   helper Locomotive::BaseHelper
@@ -80,9 +80,16 @@ class WorksController < ApplicationController
     work = Work.find(params['id'])
     editable = (work.user == current_user)
     work =  nil if (work.user != current_user && !work.published)
+    awards = []
+    award_content = current_site.content_types.where(slug: 'awards').first
+    if (work != nil && !work.award_ids.nil?)
+      work.award_ids.each{|id|
+        awards << award_content.entries.find(id)
+      }
+    end
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => username}.merge(self.file_options(work))))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => username, 'awards' => awards}.merge(self.file_options(work))))
       }
     end
   end
