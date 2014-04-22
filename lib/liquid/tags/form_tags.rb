@@ -5,6 +5,7 @@ module Liquid
       include ActionView::Helpers::UrlHelper
       include ActionView::Helpers::FormHelper
       include ActionView::Helpers::TagHelper
+      include ActionView::Helpers::TextHelper
       Syntax = /([^\s]+)\s+/
 
       # how to call this tag
@@ -66,7 +67,7 @@ module Liquid
             options['id'] = item._id
             prizetext = item.prize ? content_tag(:span, number_to_jpy(item.prize.to_i) + '円', class:"prize") : ""
             subprizetext = item.supplementary_prize ? content_tag(:span, '副賞あり', class:"supplementary_prize") : ""
-            title = item.title + prizetext +  subprizetext
+            title = content_tag(:a, item.title, href: "/awards/#{item._slug}", target:"_blank", for: item._id, class: 'award_link', title: strip_tags(item.description)) + prizetext +  subprizetext
 
             options['value']=item._id
             '<li id="award_' + item._id + '">' + tag(:input, options) + title + '</li>'
