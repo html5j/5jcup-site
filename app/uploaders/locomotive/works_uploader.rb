@@ -3,7 +3,7 @@ module Locomotive
   class WorksUploader < ::CarrierWave::Uploader::Base
 
     def store_dir
-      self.build_store_dir('works', model.id)
+      self.build_store_dir('site', 'works', model.id)
     end
 
   end
