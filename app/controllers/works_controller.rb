@@ -37,9 +37,13 @@ class WorksController < ApplicationController
 
 
   def create
-    @work = Work.new(params['work'])
-    @work.user = current_user
-    logger.debug params['work']
+    if (params['edit'])
+      @work = Work.find(params['work']['_id'])
+      @work.attributes = params['work']
+    else
+      @work = Work.new(params['work']) if @work.nil?
+      @work.user = current_user
+    end
     if @work.save
       logger.debug '**success'
       logger.debug @work.inspect
@@ -58,12 +62,11 @@ class WorksController < ApplicationController
   def show
     @page ||= self.locomotive_page('/worksshow')
     work = Work.find(params['id'])
-    logger.debug work.file_url
     editable = (work.user == current_user)
     work =  nil if (work.user != current_user && !work.published)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => current_user.name, 'file_url'=>work.file_url}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => current_user.name}.merge(self.file_options(work))))
       }
     end
   end
@@ -74,11 +77,26 @@ class WorksController < ApplicationController
     work.attributes = params['work']
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => current_user.name}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => current_user.name, 'edit'=>true}.merge(self.file_options(work))))
       }
     end
   end
 
+  def remove_empty_file_values(params)
+    logger.debug params['file']
+    params.delete('file') if params['file'] == ''
+  end
+  def file_options(work)
+    {
+      'file_url'=>work.file_url,
+      'file_cache'=>work.file_cache,
+      'image1_url'=>work.image1_url,
+      'image2_url'=>work.image2_url,
+      'image3_url'=>work.image3_url,
+      'image1_cache'=>work.image1_cache,
+      'image2_cache'=>work.image2_cache,
+      'image3_cache'=>work.image3_cache}
+  end
   private
   def awards
     return @award unless @award.nil?

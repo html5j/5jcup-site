@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 module Locomotive
   class WorksUploader < ::CarrierWave::Uploader::Base
 

@@ -84,6 +84,13 @@ module Liquid
       def file_field(input, field, options)
         options['type'] = 'file'
         opts = {id:field_id(input, field), name:field_name(input, field), multiple:true}.merge(options)
+        tag(:input, opts)
+      end
+      def hidden_field(input, field, options)
+        value = input.send(field.to_sym)
+        options['type'] = 'hidden'
+        options['value'] = value
+        opts = {id:field_id(input, field), name:field_name(input, field)}.merge(options)
         self.input_field(input,field, opts)
       end
 

@@ -11,13 +11,17 @@ class Work < Clot::BaseDrop
   field :remarks, type: String
   field :published, type: Boolean
   field :file, type: String
+  field :file_cache, type: String
   field :image1, type: String
   field :image2, type: String
   field :image3, type: String
+  field :image1_cache, type: String
+  field :image2_cache, type: String
+  field :image3_cache, type: String
   belongs_to :user
   mount_uploader :file, Locomotive::WorksUploader
-  #mount_uploader :image1, Locomotive::ImageUploader
-  #mount_uploader :image2, Locomotive::ImageUploader
-  #mount_uploader :image3, Locomotive::ImageUploader
+  mount_uploader :image1, Locomotive::ImageUploader
+  mount_uploader :image2, Locomotive::ImageUploader
+  mount_uploader :image3, Locomotive::ImageUploader
 
 end
