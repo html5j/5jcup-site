@@ -47,11 +47,15 @@ module Liquid
         select_list = @context[sel_key]
 
         options['type']= isradio ? 'radio' : 'checkbox'
-        options['name']=field_name(input, field) + '[]'
         options['class']=field_id(input, field)
         if (select_list.nil?)
+          options['name']=field_name(input, field)
+          if (input.send(field.to_sym) == true)
+            options['checked']= true
+          end
           tag(:input, options)
         else
+          options['name']=field_name(input, field) + '[]'
           # todo should remove this because this contains business logic
           select_list.map{|item|
             if values.nil?

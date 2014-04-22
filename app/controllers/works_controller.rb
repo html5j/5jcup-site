@@ -10,6 +10,21 @@ class WorksController < ApplicationController
 
   helper Locomotive::BaseHelper
 
+  def all
+    @page ||= self.locomotive_page('/workallindex')
+    works = Work.where({:published => true})
+    hworks = {}
+    works.each{|item|
+      hworks[item._id.to_s] = item
+    }
+
+    respond_to do |format|
+      format.html {
+         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => username}))
+      }
+    end
+  end
+
   def index
     @page ||= self.locomotive_page('/worksindex')
     works = current_user.works
@@ -20,7 +35,7 @@ class WorksController < ApplicationController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => current_user.name}))
+         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => username}))
       }
     end
   end
@@ -30,13 +45,14 @@ class WorksController < ApplicationController
     work = Work.new
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => current_user.name}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username}))
       }
     end
   end
 
 
   def create
+    params['work']['published'] = (params['work']['published'] == 'true')
     if (params['edit'])
       @work = Work.find(params['work']['_id'])
       @work.attributes = params['work']
@@ -53,7 +69,7 @@ class WorksController < ApplicationController
       @page ||= self.locomotive_page('/worksedit')
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors, 'username' => current_user.name}))
+           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors, 'username' => username}))
         }
       end
     end
@@ -66,7 +82,7 @@ class WorksController < ApplicationController
     work =  nil if (work.user != current_user && !work.published)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => current_user.name}.merge(self.file_options(work))))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => username}.merge(self.file_options(work))))
       }
     end
   end
@@ -77,7 +93,7 @@ class WorksController < ApplicationController
     work.attributes = params['work']
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => current_user.name, 'edit'=>true}.merge(self.file_options(work))))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
       }
     end
   end
@@ -96,6 +112,9 @@ class WorksController < ApplicationController
       'image1_cache'=>work.image1_cache,
       'image2_cache'=>work.image2_cache,
       'image3_cache'=>work.image3_cache}
+  end
+  def username
+    current_user ? current_user.name : nil
   end
   private
   def awards
