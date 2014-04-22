@@ -18,7 +18,6 @@ class WorksController < ApplicationController
       hworks[item._id.to_s] = item
     }
 
-    logger.debug(hworks)
     respond_to do |format|
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => current_user.name}))
@@ -40,9 +39,10 @@ class WorksController < ApplicationController
   def create
     @work = Work.new(params['work'])
     @work.user = current_user
-    logger.debug @work
+    logger.debug params['work']
     if @work.save
       logger.debug '**success'
+      logger.debug @work.inspect
       redirect_to :action => 'show', :id => @work.id
     else
       errors = error_messages(@work)
@@ -58,11 +58,12 @@ class WorksController < ApplicationController
   def show
     @page ||= self.locomotive_page('/worksshow')
     work = Work.find(params['id'])
+    logger.debug work.file_url
     editable = (work.user == current_user)
     work =  nil if (work.user != current_user && !work.published)
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => current_user.name}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'editable' => editable, 'username' => current_user.name, 'file_url'=>work.file_url}))
       }
     end
   end

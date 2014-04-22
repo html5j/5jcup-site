@@ -100,7 +100,7 @@ module Liquid
       end
 
       def set_upload
-        if @options["uploading"] || @options["multipart"] == "true"
+        if @options["multipart"] == "true"
           @upload_info = ' enctype="multipart/form-data"'
         else
           @upload_info = ''

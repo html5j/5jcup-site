@@ -81,6 +81,11 @@ module Liquid
         opts = options_default.merge(options)
         content_tag(:textarea, value, opts)
       end
+      def file_field(input, field, options)
+        options['type'] = 'file'
+        opts = {id:field_id(input, field), name:field_name(input, field), multiple:true}.merge(options)
+        self.input_field(input,field, opts)
+      end
 
       def submit(input, field, options)
         options.merge!({type:'submit'})

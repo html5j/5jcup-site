@@ -10,6 +10,8 @@ class Work < Clot::BaseDrop
   field :plan_appeal_point, type: String
   field :remarks, type: String
   field :published, type: Boolean
+  field :file, type: String
   belongs_to :user
+  mount_uploader :file, Locomotive::WorksUploader
 
 end
