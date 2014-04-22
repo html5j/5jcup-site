@@ -18,7 +18,7 @@ module Liquid
       def render(context)
         @model =  context[@options['model']]
         @context = context
-        @options['class'] = @options['class'].gsub(',', ' ') if @options['class']
+        @options['class'] = @options['class'].gsub(';', ' ') if @options['class']
         #field = @options.delete 'field'
         field = @options['field']
         self.send(@handle.to_sym, @model, field, @options)
