@@ -133,23 +133,22 @@ class WorksController < ApplicationController
   def awards
     return @award unless @award.nil?
     award_content = current_site.content_types.where(slug: 'awards').first
+    max = 9999999999999999
     awards = award_content.entries.sort{|a,b|
-      if (a['order'].nil? && a['order'].nil?)
-        if (a['prize'].nil? && a['prize'].nil?)
-          a['title'] <=> a['title']
-        elsif (a['prize'].nil?)
-          0
-        elsif (b['prize'].nil?)
-          -1
+      a_o = nil_max(a['order'])
+      b_o = nil_max(b['order'])
+      if (a_o == b_o)
+        a_p = nil_max(a['prize'].to_i)
+        b_p = nil_max(b['prize'].to_i)
+        if (a_p == b_p)
+          a_t = nil_max(a['title'])
+          b_t = nil_max(b['title'])
+          a_t <=> b_t
         else
-          a['prize'] <=> a['prize']
+          a_p <=> b_p
         end
-      elsif (a['order'].nil?)
-        0
-      elsif (b['order'].nil?)
-        -1
       else
-        a['order'] <=> b['order']
+        a_o <=> b_o
       end
     }
     @awards = {}
@@ -161,6 +160,9 @@ class WorksController < ApplicationController
       end
     }
     @awards
+  end
+  def nil_max(data)
+    data.nil? ? 99999999999999 : data
   end
   def error_messages(resource)
     return "" if resource.errors.empty?
