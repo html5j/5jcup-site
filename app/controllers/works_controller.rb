@@ -20,7 +20,7 @@ class WorksController < ApplicationController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => username}))
+         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => username, 'msg' => flash[:notify]}))
       }
     end
   end
@@ -103,6 +103,12 @@ class WorksController < ApplicationController
          render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
       }
     end
+  end
+
+  def destroy
+    #Work.find((params["id"])).destroy
+    flash[:notify] = '削除完了しました'
+    render :json => {result:"ok"}
   end
 
   def remove_empty_file_values(params)
