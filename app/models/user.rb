@@ -8,6 +8,8 @@ class User < Clot::BaseDrop
          :recoverable, :rememberable, :trackable, :validatable
 
   field :name,               :type => String
+  field :handle_name,               :type => String
+  field :twitter_id,               :type => String
   ## Database authenticatable
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
