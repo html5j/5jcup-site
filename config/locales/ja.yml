@@ -204,7 +204,7 @@ ja:
         name: 'お名前'
         email: 'メールアドレス'
         handle_name: 'ハンドルネーム'
-        twitter_id: 'Twetter アカウント'
+        twitter_id: 'Twitter アカウント'
         password: 'パスワード'
         password_confirmation: '確認用メールアドレス'
         current_password: '現在のパスワード'
@@ -220,5 +220,5 @@ ja:
         published: '公開/非公開'
         file: '添付ファイル'
         handle_name: 'ハンドルネーム'
-        twitter_id: 'Twetter アカウント'
+        twitter_id: 'Twitter アカウント'
 
