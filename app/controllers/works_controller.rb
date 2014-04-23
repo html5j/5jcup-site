@@ -45,7 +45,7 @@ class WorksController < ApplicationController
     work = Work.new
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username, 'user' => current_user}))
       }
     end
   end

@@ -219,4 +219,6 @@ ja:
         remarks: '自由記入欄'
         published: '公開/非公開'
         file: '添付ファイル'
+        handle_name: 'ハンドルネーム'
+        twitter_id: 'Twetter アカウント'
 

@@ -1,6 +1,8 @@
 class Work < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :title
+  validates_presence_of :handle_name
+  validates_presence_of :twitter_id
   field :title, type: String
   field :description, type: String
   field :award_ids, type: Array
@@ -18,6 +20,8 @@ class Work < Clot::BaseDrop
   field :image1_cache, type: String
   field :image2_cache, type: String
   field :image3_cache, type: String
+  field :handle_name, type: String
+  field :twitter_id, type:String
   belongs_to :user
   mount_uploader :file, Locomotive::WorksUploader
   mount_uploader :image1, Locomotive::ImageUploader
