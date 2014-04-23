@@ -2,7 +2,6 @@ class Work < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :title
   validates_presence_of :handle_name
-  validates_presence_of :twitter_id
   field :title, type: String
   field :description, type: String
   field :award_ids, type: Array
