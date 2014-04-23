@@ -24,6 +24,7 @@ module Locomotive
       end
 
       def show
+        session['current_user'] = current_user.name
         if (current_user)
           render_locomotive_page(nil, {'username' => current_user.name})
         else
