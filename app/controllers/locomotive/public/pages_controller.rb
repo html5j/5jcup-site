@@ -25,9 +25,11 @@ module Locomotive
 
       def show
         if (current_user)
+          logger.info('          current user!!!')
           session['username'] = current_user.name
           render_locomotive_page(nil, {'username' => current_user.name})
         else
+          logger.info('          no current user!!!')
           render_locomotive_page
         end
       end
