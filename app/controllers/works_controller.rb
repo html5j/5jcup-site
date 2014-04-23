@@ -106,7 +106,7 @@ class WorksController < ApplicationController
   end
 
   def destroy
-    #Work.find((params["id"])).destroy
+    Work.find((params["id"])).destroy
     flash[:notify] = '削除完了しました'
     render :json => {result:"ok"}
   end
