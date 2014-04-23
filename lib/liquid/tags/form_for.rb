@@ -7,8 +7,6 @@ module Liquid
       Syntax = /([^\s]+)\s+/
 
       def render(context)
-        p @handle
-        p @options
         @model =  context[@handle]
         set_variables context
         render_form context
@@ -39,7 +37,6 @@ module Liquid
       end
 
       def get_form_body(context)
-        p @nodelist
         context.stack do
           render_all(@nodelist, context)
         end

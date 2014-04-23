@@ -69,8 +69,6 @@ module Liquid
             prizetext = item.prize ? content_tag(:span, number_to_jpy(item.prize.to_i) + '円', class:"prize") : ""
             subprizetext = item.supplementary_prize ? content_tag(:span, '副賞あり', class:"supplementary_prize") : ""
             title = content_tag(:a, item.title, href: "/awards/#{item._slug}", target:"_blank", for: item._id, class: 'award_link', title: strip_tags(item.description)) + prizetext +  subprizetext
-                                                                                                            p title
-
             options['value']=item._id
             '<li id="award_' + item._id + '">' + tag(:input, options) + title + '</li>'
           }.join
