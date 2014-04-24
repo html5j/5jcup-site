@@ -2,6 +2,11 @@ class Work < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :title
   validates_presence_of :handle_name
+  validates :handle_name, :length => { :maximum => 20 }
+  validates :twitter_id, :length => { :maximum => 20 }
+  validates :title, :length => { :maximum => 40 }
+  validates :description, :length => { :maximum => 500 }
+
   field :title, type: String
   field :description, type: String
   field :award_ids, type: Array

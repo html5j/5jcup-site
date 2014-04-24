@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shoulda-matchers'
 
 describe Work do
   it {should validate_presence_of(:title)}
@@ -12,7 +13,8 @@ describe Work do
 
   describe '.new' do
     context 'given valid attributes' do
-      subject { Work.new(:title => 'a', :description => 'a') }
+      subject { Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
+                        :handle_name => "a") }
       it { should be_valid }
     end
     context 'given null title' do

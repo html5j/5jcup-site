@@ -2,6 +2,8 @@
 
 FactoryGirl.define do
   factory :work do
+    handle_name 'ハル関'
+    twitter_id 'hal_sk'
     title "MyString"
     description "MyText"
     award_ids ""
