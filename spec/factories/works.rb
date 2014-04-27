@@ -6,7 +6,7 @@ FactoryGirl.define do
     twitter_id 'hal_sk'
     title "MyString"
     description "MyText"
-    award_ids ""
+    award_ids ["1"]
     tested_environment "MyText"
     url "MyString"
     technical_appeal_point "MyText"

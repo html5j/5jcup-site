@@ -32,4 +32,29 @@ class Work < Clot::BaseDrop
   mount_uploader :image2, Locomotive::ImageUploader
   mount_uploader :image3, Locomotive::ImageUploader
 
+  def awards=(awards)
+    @awards = awards
+  end
+  def awards
+    @awards
+  end
+
+  validate do |work|
+    WorkValidator.new(work).validate(@awards)
+  end
+end
+
+class WorkValidator
+  def initialize(work)
+    @work = work
+  end
+  def validate(awards)
+    ret = false
+    return if @work.award_ids.nil?
+    return if awards.nil?
+    return if awards['テーマ'].nil?
+    @work.award_ids.each do |aid|
+      @work.erros["award_ids"] << 'テーマを1つ選択してください' if awards['テーマ'].select{|a| a.id == aid}.length == 1
+    end
+  end
 end
