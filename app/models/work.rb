@@ -5,6 +5,7 @@ class Work < Clot::BaseDrop
   validates :handle_name, :length => { :maximum => 20 }
   validates :twitter_id, :length => { :maximum => 20 }
   validates :title, :length => { :maximum => 40 }
+  validates :url, :format => URI::regexp(%w(http https)), :allow_blank => true
   validates :description, :length => { :maximum => 500 }
 
   field :title, type: String
@@ -49,8 +50,7 @@ class WorkValidator
     @work = work
   end
   def validate(awards)
-    ret = false
-    return if awards.nil?
+    @work.errors['url'] << 'かアプリケーションはどちらか必ず登録してください。' if @work.url.blank? && @work.file.blank?
     if @work.award_ids.nil?
       @work.errors["award_ids"] << ':テーマを1つ選択してください'
     else
