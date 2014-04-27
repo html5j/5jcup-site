@@ -50,11 +50,11 @@ class WorkValidator
   end
   def validate(awards)
     ret = false
-    return if @work.award_ids.nil?
     return if awards.nil?
-    return if awards['テーマ'].nil?
-    @work.award_ids.each do |aid|
-      @work.erros["award_ids"] << 'テーマを1つ選択してください' if awards['テーマ'].select{|a| a.id == aid}.length == 1
+    if @work.award_ids.nil?
+      @work.errors["award_ids"] << ':テーマを1つ選択してください'
+    else
+      @work.errors["award_ids"] << ':テーマを1つ選択してください' if @work.award_ids.select{|id| awards.find{|a| a.id == id && a['category'] == 'テーマ'}}.length == 1
     end
   end
 end

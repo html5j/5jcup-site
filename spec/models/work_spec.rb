@@ -17,7 +17,7 @@ describe Work do
       @award = FactoryGirl.build(:content_type)
       @award.entries_custom_fields.build label: 'title', type: 'string'
       @award.entries_custom_fields.build label: 'description', type: 'text'
-      @award.entries_custom_fields.build label: 'description', type: 'text'
+      @award.entries_custom_fields.build label: 'category', type: 'text'
       @award.valid?
       @award.send(:set_label_field)
     end
@@ -25,6 +25,7 @@ describe Work do
     context 'work should load awards data' do
       work = Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
                         :handle_name => "a", :award_ids => ["1"])
+      @award['category'] = 'テーマ'
       work.awards = [@award]
       it {
         work.awards.count.should == 1

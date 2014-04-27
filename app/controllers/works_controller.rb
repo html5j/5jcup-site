@@ -60,6 +60,8 @@ class WorksController < ApplicationController
       @work = Work.new(params['work']) if @work.nil?
       @work.user = current_user
     end
+    award_content = current_site.content_types.where(slug: 'awards').first
+    @work.awards = award_content.entries
     if @work.save
       logger.debug '**success'
       logger.debug @work.inspect
