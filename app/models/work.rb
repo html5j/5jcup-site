@@ -60,7 +60,9 @@ class WorkValidator
   end
   private
   def count_by_theme(awards, category_ids, theme)
+    return 0 if awards.nil?
     theme_id = nil
+    p awards
     awards[0]['custom_fields_recipe']['rules'].select{|rule|
       if rule['name'] == 'category'
         rule['select_options'].select{|opt|
@@ -73,9 +75,7 @@ class WorkValidator
     }
     target_award_ids = target_awards.map{|a| a._id.to_s}
     category_ids.select{|id|
-      p id.to_s
-      p target_award_ids
-      p target_award_ids.include?(id.to_s)
+      target_award_ids.include?(id.to_s)
     }.length
   end
 end
