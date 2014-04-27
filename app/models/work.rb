@@ -54,7 +54,28 @@ class WorkValidator
     if @work.award_ids.nil?
       @work.errors["award_ids"] << ':テーマを1つ選択してください'
     else
-      @work.errors["award_ids"] << ':テーマを1つ選択してください' if @work.award_ids.select{|id| awards.find{|a| a.id == id && a['category'] == 'テーマ'}}.length == 1
+      @work.errors["award_ids"] << ':テーマを1つ選択してください' unless count_by_theme(awards, @work.award_ids, 'テーマ')  == 1
+      @work.errors["award_ids"] << ':ノンジャンル賞は3つまでしか選択できません' if count_by_theme(awards, @work.award_ids, 'ノンジャンル') > 3
     end
+  end
+  private
+  def count_by_theme(awards, category_ids, theme)
+    theme_id = nil
+    awards[0]['custom_fields_recipe']['rules'].select{|rule|
+      if rule['name'] == 'category'
+        rule['select_options'].select{|opt|
+          theme_id = opt['_id'] if opt['name']['ja'] == theme
+        }
+      end
+    }
+    target_awards = awards.select{|a|
+      a.category_id == theme_id
+    }
+    target_award_ids = target_awards.map{|a| a._id.to_s}
+    category_ids.select{|id|
+      p id.to_s
+      p target_award_ids
+      p target_award_ids.include?(id.to_s)
+    }.length
   end
 end
