@@ -67,6 +67,11 @@ describe Work do
                         :handle_name => "a", :awards_ids => ["non1", "non2", "non3", "non4", "1"]) }
       it { should have(1).errors_on(:award_ids) }
     end
+    context 'url or file should be sent' do
+      subject { Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
+                        :handle_name => "a", :awards_ids => ["non1", "non2", "non3", "non4", "1"]) }
+      it { subject.errors_on(:url).should include('かアプリケーションはどちらか必ず登録してください。') }
+    end
   end
   class AwardObject
     def initialize(id)
