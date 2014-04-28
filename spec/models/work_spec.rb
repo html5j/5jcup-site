@@ -24,7 +24,14 @@ describe Work do
             'name' => {
               'ja' => 'テーマ'
             }
-      }]}]}
+          },{
+            '_id' => "nongenreid",
+            'name' => {
+              'ja' => 'ノンジャンル'
+            }
+          }
+
+      ]}]}
     end
 
     context 'given valid attributes' do
@@ -50,12 +57,16 @@ describe Work do
       subject { Work.new(:description => "0" * 501) }
       it { should have(1).errors_on(:description) }
     end
-    # TODO coudn't implement right way....
-    #context 'doesn\'t select any awards having theme' do
-    #  subject { Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
-    #                    :handle_name => "a") }
-    #  it { should have(1).errors_on(:award_ids) }
-    #end
+    context 'doesn\'t select any awards having theme' do
+      subject { Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
+                        :handle_name => "a") }
+      it { should have(1).errors_on(:award_ids) }
+    end
+    context 'too many select non-genre awards' do
+      subject { Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
+                        :handle_name => "a", :awards_ids => ["non1", "non2", "non3", "non4", "1"]) }
+      it { should have(1).errors_on(:award_ids) }
+    end
   end
   class AwardObject
     def initialize(id)
