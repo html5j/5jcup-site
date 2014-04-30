@@ -10,7 +10,8 @@ class DlController < ApplicationController
     #logger.debug(@page.render(self.locomotive_context({})))
     context = self.locomotive_context({})
     if (type == 'dlurl1')
-      url = context['material'][type]
+      binding.pry
+      url = context['material'][type].gsub('{{userid}}', current_user.id)
     else
       url = context['material'][type].url
     end
