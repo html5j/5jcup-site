@@ -25,7 +25,7 @@ module Locomotive
 
       def show
         if (current_user)
-          render_locomotive_page(nil, {'username' => current_user.name, 'userid' => current_user.id})
+          render_locomotive_page(nil, {'username' => current_user.name, 'userid' => current_user.id.to_s})
         else
           render_locomotive_page
         end
