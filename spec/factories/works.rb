@@ -13,6 +13,7 @@ FactoryGirl.define do
     plan_appeal_point "MyText"
     remarks "MyText"
     published false
+    user :user
     before(:create) do |work|
       award = Locomotive::ContentEntry.new
       award['_id'] = "1"

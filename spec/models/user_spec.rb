@@ -10,5 +10,13 @@ describe User do
       its(:name) { eq 'ハル' }
     end
   end
+  describe 'delete' do
+    before do
+      @work = FactoryGirl.create(:work)
+    end
+    subject { @work.user }
+    its(:name) { eq 'Hal' }
+  end
+
 end
 
