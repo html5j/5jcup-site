@@ -50,6 +50,25 @@ module Locomotive
         self.setup_i18n_fallbacks
       end
 
+      # override lib/locomotive/render.rb
+      def prepare_and_set_response(output)
+        flash.discard
+
+        response.headers['Content-Type']  = "#{@page.response_type}; charset=utf-8"
+        response.headers['Editable']      = 'true' unless self.editing_page? || current_locomotive_account.nil?
+
+        if @page.with_cache?
+          fresh_when etag: @page, last_modified: @page.updated_at.utc, public: true
+
+          if @page.cache_strategy != 'simple' # varnish
+            response.headers['Editable']      = ''
+            response.cache_control[:max_age]  = @page.cache_strategy
+          end
+        end
+
+        render text: output.gsub('{{userid}}', user_signed_in? ? current_user.id.to_s : ""), layout: false, status: page_status unless performed?
+      end
+
     end
   end
 end
