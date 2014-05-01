@@ -34,7 +34,7 @@ class User < Clot::BaseDrop
   field :confirmation_sent_at, :type => Time
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
-  has_many :works
+  has_many :works, :dependent => :delete
 
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts

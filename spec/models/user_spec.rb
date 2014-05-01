@@ -14,8 +14,25 @@ describe User do
     before do
       @work = FactoryGirl.create(:work)
     end
-    subject { @work.user }
-    its(:name) { eq 'Hal' }
+
+    context 'select all' do
+      subject {Work.all}
+      it { should have(1).items }
+    end
+
+    context 'work has user' do
+      subject { @work.user }
+      its(:name) { eq 'Hal' }
+    end
+    context 'delete user will delete works' do
+      subject {
+        @work.user.destroy
+        subject { User.all }
+        it { should have(0).items }
+        subject { Work.all }
+        it { should have(0).items }
+      }
+    end
   end
 
 end
