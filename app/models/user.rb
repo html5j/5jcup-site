@@ -1,4 +1,4 @@
-class User < Liquid::Drop
+class User < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :name
   embeds_many :user_accounts
@@ -10,6 +10,8 @@ class User < Liquid::Drop
 
 
   field :name,               :type => String
+  field :handle_name,               :type => String
+  field :twitter_id,               :type => String
   ## Database authenticatable
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
@@ -34,6 +36,8 @@ class User < Liquid::Drop
   field :confirmed_at,         :type => Time
   field :confirmation_sent_at, :type => Time
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
+
+  has_many :works, :dependent => :delete
 
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts

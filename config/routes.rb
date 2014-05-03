@@ -15,8 +15,8 @@ Html5jcup::Application.routes.draw do
   mount Locomotive::Engine => '/locomotive', as: 'locomotive' # you can change the value of the path, by default set to "/locomotive"
   match "/dl/:slug" => "dl#show", :as => :Dl
   match "/accounts" => "accounts#show", :as => :Dl
-
-
+  match "/works/all" => "works#all"
+  resources :works
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

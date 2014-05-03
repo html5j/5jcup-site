@@ -26,7 +26,7 @@ header nav ul {
 
 }
 header nav ul > li{
-    width:16.6%;
+    width: 14.28571428571429%;
     float: left;
     text-align: center;
     line-height: 1;
@@ -62,19 +62,24 @@ h2 {
 
 .userBox {
   float:right;
+  list-style-type: none;
 }
-
-.userBox li{
+.userBox > li{
   float:right;
   font-size:11px;
   margin:8px 5px 0 0;
 }
 
-.userBox li a{
+.userBox > li > a{
   padding:5px 8px;
   border:1px solid #666;
   display:block;
   color:#fff;
+}
+#user_name {
+  border: none;
+  text-decoration: underline;
+  font-size: initial;
 }
 
 .userBox li.login a{
@@ -109,6 +114,15 @@ h2 {
     vertical-align: top;
 } 
 
+.twitter-follow-button-container {
+    width: 140px;
+}
+.twitter-share-button-container {
+    width: 120px;
+}
+.fb-like-button-container {
+    width: 120px;
+}
 .fb-like span {
     vertical-align: top !important ;
 }
@@ -116,7 +130,7 @@ h2 {
 
 header  .headimg {
     width: 100%;
-    background-image: url("/sites/5330384f485709d698000002/theme/images/catch.png");
+    background-image: url("/sites/5330384f485709d698000002/theme/images/top_mv_light.png");
     background-attachment: scroll;
     background-size: cover;
     margin-left: 0%;
@@ -219,7 +233,7 @@ header  #navBox {
     position: fixed;
     top: 50px;
     width: 100%;
-    z-index: 10000;
+/*    z-index: 10000; */
 }
 
 main {
@@ -464,4 +478,13 @@ footer p  {
     padding: 0;
     padding-left: 0.5em;
     margin: 0;
+}
+
+#user-name {
+  color: white;
+  line-height: 50px;
+  height: 50px;
+  padding: 0;
+  margin: 0 12px;
+  font-size: 0.8em;
 }

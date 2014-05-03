@@ -7,4 +7,7 @@ describe WorksController do
     subject.current_user.should_not be_nil
   end
 
+  describe "GET index" do
+
+  end
 end

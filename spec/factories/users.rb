@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :user, class:User do
     id 1
-    name "MyString"
+    name "Hal"
     email "admin@hoge.com"
     password "mypassword"
     encrypted_password "encrypted!"

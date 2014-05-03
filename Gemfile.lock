@@ -307,6 +307,7 @@ GEM
     redcarpet (3.0.0)
     responders (0.9.3)
       railties (~> 3.1)
+    rmagick (2.13.2)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -385,6 +386,7 @@ DEPENDENCIES
   rails-i18n
   rails_12factor
   rb-fsevent (= 0.9.4)
+  rmagick
   rspec-nc
   rspec-rails
   sass-rails (~> 3.2.3)

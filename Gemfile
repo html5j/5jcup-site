@@ -4,6 +4,8 @@ ruby '2.0.0'
 gem 'rails', '~> 3.2.16'
 gem 'rails-i18n'
 
+gem 'rmagick'
+
 gem 'locomotive_cms', '~> 2.4.1', :require => 'locomotive/engine'
 
 gem 'locomotive-heroku', '~> 0.1.0', :require => 'locomotive/heroku'
@@ -23,6 +25,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'spork'
   gem 'factory_girl_rails'
+  gem 'fabrication'
 end
 
 group :test do
