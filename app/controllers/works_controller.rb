@@ -3,6 +3,7 @@ class WorksController < ApplicationController
   include Locomotive::Render
   include Locomotive::ActionController::LocaleHelpers
   include ActionView::Helpers::TagHelper
+  include ::Fivejcup::Award
 
   before_filter :require_site
   before_filter :authenticate_user!, :except => ['show', 'all']
@@ -135,40 +136,6 @@ class WorksController < ApplicationController
     current_user ? current_user.name : nil
   end
   private
-  def awards
-    return @award unless @award.nil?
-    award_content = current_site.content_types.where(slug: 'awards').first
-    max = 9999999999999999
-    awards = award_content.entries.sort{|a,b|
-      a_o = nil_max(a['order'])
-      b_o = nil_max(b['order'])
-      if (a_o == b_o)
-        a_p = nil_max(a['prize'].to_i)
-        b_p = nil_max(b['prize'].to_i)
-        if (a_p == b_p)
-          a_t = nil_max(a['title'])
-          b_t = nil_max(b['title'])
-          a_t <=> b_t
-        else
-          a_p <=> b_p
-        end
-      else
-        a_o <=> b_o
-      end
-    }
-    @awards = {}
-    awards.each{|award|
-      if @awards[award.category].nil?
-        @awards[award.category] = [award]
-      else
-        @awards[award.category] << award
-      end
-    }
-    @awards
-  end
-  def nil_max(data)
-    data.nil? ? 99999999999999 : data
-  end
   def error_messages(resource)
     return "" if resource.errors.empty?
 

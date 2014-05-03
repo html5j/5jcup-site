@@ -6,6 +6,7 @@ module Locomotive
       include Locomotive::Render
       include Locomotive::ActionController::LocaleHelpers
       include Auth::AuthPage
+      include Fivejcup::Award
 
       before_filter :require_site
 
@@ -25,9 +26,9 @@ module Locomotive
 
       def show
         if (current_user)
-          render_locomotive_page(nil, {'username' => current_user.name, 'userid' => current_user.id.to_s})
+          render_locomotive_page(nil, {'username' => current_user.name, 'awards' => awards, 'userid' => current_user.id.to_s})
         else
-          render_locomotive_page
+          render_locomotive_page(nil, {'awards'=> awards })
         end
       end
 
