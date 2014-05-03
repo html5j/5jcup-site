@@ -43,6 +43,16 @@ describe Work do
         should be_valid
       }
     end
+    context 'given team members' do
+      work = Work.new(:title => 'a', :description => 'a', :twitter_id => 'hal_sk',
+                        :handle_name => "a", :award_ids => ["1"], :url => 'http://www.yahoo.co.jp', :members => ['hal_sk', 'ハル', 'hoge'])
+      subject { work }
+      it {
+        work.awards = [@award]
+        should be_valid
+        subject.members.should have(3).items
+      }
+    end
     context 'given null title' do
       subject { Work.new(:description => 'a') }
       it {

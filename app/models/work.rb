@@ -11,6 +11,7 @@ class Work < Clot::BaseDrop
   field :title, type: String
   field :description, type: String
   field :award_ids, type: Array
+  field :members, type: Array
   field :tested_environment, type: String
   field :url, type: String
   field :technical_appeal_point, type: String

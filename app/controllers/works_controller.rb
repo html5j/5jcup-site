@@ -45,7 +45,7 @@ class WorksController < ApplicationController
     work = Work.new
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username, 'user' => current_user}))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'members_json' => '[]','awards' => awards, 'username' => username, 'user' => current_user}))
       }
     end
   end
@@ -53,6 +53,7 @@ class WorksController < ApplicationController
 
   def create
     params['work']['published'] = (params['work']['published'] == 'true')
+    params['work']['members'].reject!{|e| e.empty? }
     if (params['edit'])
       @work = Work.find(params['work']['_id'])
       @work.attributes = params['work']
@@ -63,8 +64,6 @@ class WorksController < ApplicationController
     award_content = current_site.content_types.where(slug: 'awards').first
     @work.awards = award_content.entries
     if @work.save
-      logger.debug '**success'
-      logger.debug @work.inspect
       redirect_to :action => 'show', :id => @work.id
     else
       errors = error_messages(@work)
@@ -100,9 +99,13 @@ class WorksController < ApplicationController
     @page ||= self.locomotive_page('/worksedit')
     work = Work.find(params['id'])
     work.attributes = params['work']
+    work.members.map!{|e|
+      ERB::Util.html_escape(e)
+    }
+    members_json = work.members.nil? ? '[]' : work.members.to_json
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'members_json' => members_json, 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
       }
     end
   end
