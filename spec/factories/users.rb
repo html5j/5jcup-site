@@ -8,7 +8,7 @@ FactoryGirl.define do
     password "mypassword"
     encrypted_password "encrypted!"
     after(:build) do |user|
-      user.user_accounts = FactoryGirl.build(:user_account)
+      user.user_accounts << FactoryGirl.build(:user_account)
     end
   end
 end
