@@ -71,7 +71,7 @@ class WorksController < ApplicationController
       @page ||= self.locomotive_page('/worksedit')
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors, 'username' => username}))
+           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'members_json' => members_json(@work), 'awards' => awards, 'error' => errors, 'username' => username}))
         }
       end
     end
@@ -100,13 +100,13 @@ class WorksController < ApplicationController
     @page ||= self.locomotive_page('/worksedit')
     work = Work.find(params['id'])
     work.attributes = params['work']
+    work.members ||= []
     work.members.map!{|e|
       ERB::Util.html_escape(e)
     }
-    members_json = work.members.nil? ? '[]' : work.members.to_json
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'members_json' => members_json, 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'members_json' => members_json(work), 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
       }
     end
   end
@@ -115,6 +115,10 @@ class WorksController < ApplicationController
     Work.find((params["id"])).destroy
     flash[:notify] = '削除完了しました'
     render :json => {result:"ok"}
+  end
+
+  def members_json(work)
+    work.members.nil? ? '[]' : work.members.to_json
   end
 
   def remove_empty_file_values(params)
