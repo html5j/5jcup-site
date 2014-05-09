@@ -7,7 +7,9 @@ describe UserAccountController do
   it "sets session vairable to the OmniAuth auth hash" do
     request.env["omniauth.auth"]['uid'].should == '1234'
   end
-  it 'create new user if there is no email' do
+  it 'show new user registration if there is no email' do
+    expect(request.env['omniauth.auth']['info']['email']).to eq('hal@email.com')
+    get :create, :providor => 'facebook'
 
   end
 

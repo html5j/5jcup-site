@@ -54,8 +54,8 @@ Spork.prefork do
     omniauth_hash =
         {:provider => "facebook",
          :uid      => "1234",
-         :info   => {:name       => "John Doe",
-                     :email      => "johndoe@email.com"},
+         :info   => {:name       => "Hal Seki",
+                     :email      => "hal@email.com"},
          :credentials => {:token => "testtoken234tsdf"}}
 
     OmniAuth.config.add_mock(:facebook, omniauth_hash)
@@ -161,8 +161,8 @@ RSpec.configure do |config|
   omniauth_hash =
       {:provider => "facebook",
        :uid      => "1234",
-       :info   => {:name       => "John Doe",
-                   :email      => "johndoe@email.com"},
+       :info   => {:name       => "Hal Seki",
+                   :email      => "hal@email.com"},
        :credentials => {:token => "testtoken234tsdf"}}
 
   OmniAuth.config.add_mock(:facebook, omniauth_hash)
