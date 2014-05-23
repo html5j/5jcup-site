@@ -1,3 +1,5 @@
+require 'file_size_validator'
+
 class Work < Clot::BaseDrop
   include Mongoid::Document
   validates_presence_of :title
@@ -40,6 +42,14 @@ class Work < Clot::BaseDrop
   def awards
     @awards
   end
+  validates :image1,
+    :file_size => {
+    :maximum => 3.megabytes.to_i
+  }
+  validates :image2,
+    :file_size => {
+    :maximum => 3.megabytes.to_i
+  }
 
   validate do |work|
     WorkValidator.new(work).validate(@awards)

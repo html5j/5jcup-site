@@ -5,7 +5,9 @@ module Locomotive
   class ImageUploader < ::CarrierWave::Uploader::Base
     include ::CarrierWave::RMagick
 
-    process resize_to_limit: [1200, 800]
+    version :medium do
+      process resize_to_limit: [1200, 800]
+    end
 
     def store_dir
       self.build_store_dir('site', 'works', model.id, 'image')

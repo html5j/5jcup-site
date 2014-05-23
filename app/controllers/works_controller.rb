@@ -129,9 +129,9 @@ class WorksController < ApplicationController
     {
       'file_url'=>work.file_url,
       'file_cache'=>work.file_cache,
-      'image1_url'=>work.image1_url,
-      'image2_url'=>work.image2_url,
-      'image3_url'=>work.image3_url,
+      'image1_url'=>work.image1_url(:medium),
+      'image2_url'=>work.image2_url(:medium),
+      'image3_url'=>work.image3_url(:medium),
       'image1_cache'=>work.image1_cache,
       'image2_cache'=>work.image2_cache,
       'image3_cache'=>work.image3_cache}
