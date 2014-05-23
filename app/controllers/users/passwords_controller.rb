@@ -43,5 +43,17 @@ class Users::PasswordsController < Devise::PasswordsController
     end
   end
 
+  # GET /resource/password/edit?reset_password_token=abcdef
+  def edit
+    self.resource = resource_class.new
+    resource.reset_password_token = params[:reset_password_token]
+    @page ||= self.locomotive_page('/passwordedit')
+    respond_to do |format|
+      format.html {
+        render :inline => @page.render(self.locomotive_context({ 'user' => self.resource, 'error' => flash[:error]}))
+      }
+    end
+  end
+
 
 end
