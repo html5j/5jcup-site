@@ -55,5 +55,34 @@ class Users::PasswordsController < Devise::PasswordsController
     end
   end
 
+  # PUT /resource/password
+  def update
+    self.resource = resource_class.reset_password_by_token(resource_params)
+    yield resource if block_given?
+
+    if resource.errors.empty?
+      resource.unlock_access! if unlockable?(resource)
+      flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
+      sign_in(resource_name, resource)
+      @page ||= self.locomotive_page('/endpasswordreset')
+      respond_to do |format|
+        format.html {
+           render :inline => @page.render(self.locomotive_context({ 'user' => self.resource}))
+        }
+      end
+    else
+      flash[:error] = ""
+      resource.errors.full_messages.each do |msg|
+        flash[:error] << '<li>' + msg + '</li>'
+      end
+      @page ||= self.locomotive_page('/passwordedit')
+      respond_to do |format|
+        format.html {
+          render :inline => @page.render(self.locomotive_context({ 'user' => self.resource, 'error' => flash[:error]}))
+        }
+      end
+    end
+  end
+
 
 end
