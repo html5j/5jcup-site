@@ -71,7 +71,7 @@ class WorksController < ApplicationController
       @page ||= self.locomotive_page('/worksedit')
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'awards' => awards, 'error' => errors, 'username' => username}))
+           render :inline => @page.render(self.locomotive_context({ 'work' => @work, 'members_json' => members_json(@work), 'awards' => awards, 'error' => errors, 'username' => username}))
         }
       end
     end
@@ -100,13 +100,13 @@ class WorksController < ApplicationController
     @page ||= self.locomotive_page('/worksedit')
     work = Work.find(params['id'])
     work.attributes = params['work']
+    work.members ||= []
     work.members.map!{|e|
       ERB::Util.html_escape(e)
     }
-    members_json = work.members.nil? ? '[]' : work.members.to_json
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'members_json' => members_json, 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
+         render :inline => @page.render(self.locomotive_context({ 'work' => work, 'members_json' => members_json(work), 'awards' => awards, 'username' => username, 'edit'=>true}.merge(self.file_options(work))))
       }
     end
   end
@@ -117,6 +117,10 @@ class WorksController < ApplicationController
     render :json => {result:"ok"}
   end
 
+  def members_json(work)
+    work.members.nil? ? '[]' : work.members.to_json
+  end
+
   def remove_empty_file_values(params)
     logger.debug params['file']
     params.delete('file') if params['file'] == ''
@@ -125,9 +129,9 @@ class WorksController < ApplicationController
     {
       'file_url'=>work.file_url,
       'file_cache'=>work.file_cache,
-      'image1_url'=>work.image1_url,
-      'image2_url'=>work.image2_url,
-      'image3_url'=>work.image3_url,
+      'image1_url'=>work.image1_url(:medium),
+      'image2_url'=>work.image2_url(:medium),
+      'image3_url'=>work.image3_url(:medium),
       'image1_cache'=>work.image1_cache,
       'image2_cache'=>work.image2_cache,
       'image3_cache'=>work.image3_cache}

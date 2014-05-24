@@ -122,6 +122,10 @@ ja:
       too_short: は%{count}文字以上で入力してください。
       wrong_length: は%{count}文字で入力してください。
       other_than: "は%{count}以外の値にしてください。"
+      extension_white_list_error: 'の拡張子がサポートしているものではありません'
+      wrong_size: "のファイルサイズが正しくありません (should be %{file_size})"
+      size_too_small: "のファイルサイズが小さすぎます。 (%{file_size} 以上にしてください。)"
+      size_too_big: "のファイルサイズが大きすぎます。 (%{file_size} 以下にして下さい。)"
     template:
       body: 次の項目を確認してください。
       header:
@@ -222,4 +226,7 @@ ja:
         handle_name: 'ハンドルネーム'
         twitter_id: 'Twitter アカウント'
         members: 'メンバー'
+        image1: プレビュー画像1
+        image2: プレビュー画像2
+        image3: プレビュー画像3
 
