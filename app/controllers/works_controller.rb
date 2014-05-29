@@ -19,7 +19,7 @@ class WorksController < ApplicationController
     elsif params[:order] == "handle_name"
       order = :handle_name.asc
     else
-      order = :id.asc
+      order = :id.desc
     end
     works = Work.where({:published => true})
     unless params[:title].blank?
