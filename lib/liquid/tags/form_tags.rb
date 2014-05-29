@@ -27,7 +27,7 @@ module Liquid
       def label(input, field, options)
 
         #"<label for=\"#{goodname(input)}_#{field}\">#{input.class.human_attribute_name(field)}</label>"
-        content_tag(:label, input.class.human_attribute_name(field), for:field_id(input, field))
+        content_tag(:label, input.orig_class.human_attribute_name(field), for:field_id(input, field))
       end
       def input_field(input, field, options)
         value = input.send(field.to_sym)
@@ -117,7 +117,7 @@ module Liquid
         modelname_single(model_instance) + "[" + field_name + "]"
       end
       def modelname_single(model_instance)
-        model_instance.class.name.tableize.singularize
+        model_instance.orig_class.name.tableize.singularize
       end
 
       def number_to_jpy(number)
