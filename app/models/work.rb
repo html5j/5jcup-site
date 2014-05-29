@@ -62,6 +62,10 @@ class Work < Clot::BaseDrop
     self.image1_url(:medium).to_s
   end
 
+  def id_to_s
+    self.id.to_s
+  end
+  
   def to_liquid
     WorkField.new(self)
   end
@@ -127,10 +131,6 @@ class WorkField < Liquid::Drop
     @work.image3_url(:medium)
   end
   
-  def id_to_s
-    @work.id.to_s
-  end
-
   def source
     @work.source
   end
