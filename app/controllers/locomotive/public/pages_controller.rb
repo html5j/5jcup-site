@@ -7,6 +7,7 @@ module Locomotive
       include Locomotive::ActionController::LocaleHelpers
       include Auth::AuthPage
       include Fivejcup::Award
+      include Fivejcup::WorkConcern
 
       before_filter :require_site
 
@@ -26,9 +27,9 @@ module Locomotive
 
       def show
         if (current_user)
-          render_locomotive_page(nil, {'username' => current_user.name, 'awards' => awards, 'userid' => current_user.id.to_s})
+          render_locomotive_page(nil, {'username' => current_user.name, 'awards' => awards, 'userid' => current_user.id.to_s, 'award_search_object' => award_search_object, 'new_works' => new_works})
         else
-          render_locomotive_page(nil, {'awards'=> awards })
+          render_locomotive_page(nil, {'awards'=> awards, 'award_search_object' => award_search_object, 'new_works' => new_works})
         end
       end
 

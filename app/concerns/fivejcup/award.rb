@@ -39,6 +39,40 @@ module Fivejcup
 
       @awards
     end
+
+    def award_search_object
+      _awards = awards
+      main_prize = []
+      supplementary_prize = []
+      recommends = []
+      _awards.each do |k, v|
+        recommends_count = []
+        v.each do |award|
+          unless award.prize.blank?
+            main_prize << "award_#{award._slug}"
+          end
+          unless award.supplementary_prize.blank?
+            supplementary_prize << "award_#{award._slug}"
+          end
+          recommends_count << ["award_#{award._slug}", Work.in(award_ids: [award.id.to_s]).count]
+        end
+        recommends_count.sort!{|a, b|
+          a[1] <=> b[1]
+        }
+        count = 0
+        max = 3
+        recommends_count.each do |item|
+          if count > max and item[1] != 0
+            break
+          end
+          recommends << item[0]
+          count = count + 1
+        end
+      end
+      ret = { main_prize: main_prize, supplementary_prize: supplementary_prize, recommends: recommends }
+      return ret.to_json
+    end
+    
     def nil_max(data)
       data.nil? ? 99999999999999 : data
     end

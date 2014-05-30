@@ -13,15 +13,32 @@ class WorksController < ApplicationController
 
   def all
     @page ||= self.locomotive_page('/workallindex')
+    award_content = current_site.content_types.where(slug: 'awards').first
+    if params[:order] == "title"
+      order = :title.asc
+    elsif params[:order] == "handle_name"
+      order = :handle_name.asc
+    else
+      order = :id.desc
+    end
     works = Work.where({:published => true})
-    hworks = {}
-    works.each{|item|
-      hworks[item._id.to_s] = item
-    }
-
+    unless params[:title].blank?
+      works = works.where(title: /#{params[:title]}/)
+    end
+    unless params[:awards].blank?
+      award_ids = award_content.entries.in("_slug.ja" => params[:awards]).map(&:_id).map(&:to_s)
+      logger.debug(award_ids)
+      works = works.in(award_ids: award_ids)
+    end
+    works = works.order_by(order)
+    new_works = []
+    works.each do |work|
+      work.awards = award_content.entries.in(_id: work.award_ids)
+      new_works << work
+    end
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'works' => hworks, 'username' => username, 'msg' => flash[:notify]}))
+         render :inline => @page.render(self.locomotive_context({ 'works' => new_works, 'username' => username, 'awards' => awards, 'order' => params[:order], 'msg' => flash[:notify]}))
       }
     end
   end

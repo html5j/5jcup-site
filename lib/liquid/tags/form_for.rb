@@ -67,7 +67,7 @@ module Liquid
         if @activity == "edit"
           @form_action = object_url @model
         elsif @activity == "new"
-          @form_action = "/" + @model.class.name.tableize.pluralize
+          @form_action = "/" + @model.orig_class.name.tableize.pluralize
         else
           syntax_error
         end
@@ -82,14 +82,14 @@ module Liquid
       end
       def set_id
         if @options["id"].nil?
-          @id_string = 'id="' + @activity + "_" + @model.class.name.tableize.singularize + '" '
+          @id_string = 'id="' + @activity + "_" + @model.orig_class.name.tableize.singularize + '" '
         else
           @id_string += 'id="' + @options["id"] + '" '
         end
       end
 
       def set_class
-        @class_string = 'class="' + @activity + "_" + @model.class.name.tableize.singularize
+        @class_string = 'class="' + @activity + "_" + @model.orig_class.name.tableize.singularize
         unless @options["class"].nil?
           @class_string += ' ' + @options["class"]
         end

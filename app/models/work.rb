@@ -36,12 +36,15 @@ class Work < Clot::BaseDrop
   mount_uploader :image2, Locomotive::ImageUploader
   mount_uploader :image3, Locomotive::ImageUploader
 
-  def awards=(awards)
-    @awards = awards
+  paginates_per 10
+  
+  attr :awards, true
+
+  def awards_name
+    awards_name = @awards.map(&:title).join(', ')
+    awards_name
   end
-  def awards
-    @awards
-  end
+  
   validates :image1,
     :file_size => {
     :maximum => 3.megabytes.to_i
@@ -53,6 +56,18 @@ class Work < Clot::BaseDrop
 
   validate do |work|
     WorkValidator.new(work).validate(@awards)
+  end
+
+  def image1_url_medium
+    self.image1_url(:medium).to_s
+  end
+
+  def id_to_s
+    self.id.to_s
+  end
+  
+  def to_liquid
+    WorkField.new(self)
   end
 end
 
@@ -88,5 +103,45 @@ class WorkValidator
     category_ids.select{|id|
       target_award_ids.include?(id.to_s)
     }.length
+  end
+end
+
+class WorkField < Liquid::Drop
+  attr_reader :work
+
+  def initialize(work)
+    @work = work
+  end
+
+  def before_method(method)
+    if method && method != '' && @work.class.public_method_defined?(method.to_s.to_sym)
+      @work.send(method.to_s.to_sym)
+    end
+  end
+  
+  def image1_url
+    @work.image1_url(:medium)
+  end
+
+  def image2_url
+    @work.image2_url(:medium)
+  end
+
+  def image3_url
+    @work.image3_url(:medium)
+  end
+  
+  def source
+    @work.source
+  end
+
+  def orig_class
+    @work.class
+  end
+
+  def send(sym)
+    if sym && @work.class.public_method_defined?(sym)
+      @work.send(sym)
+    end
   end
 end
