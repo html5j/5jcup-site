@@ -34,6 +34,7 @@ group :test do
   gem 'rspec-nc'
   gem 'shoulda-matchers'
   gem 'fabrication'
+  gem 'webrat'
 end
 
 

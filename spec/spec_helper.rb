@@ -2,6 +2,8 @@ require 'rubygems'
 require 'spork'
 require 'factory_girl'
 require 'shoulda-matchers'
+require 'webrat'
+
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -20,6 +22,7 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
   RSpec.configure do |config|
+    config.infer_spec_type_from_file_location!
     # ## Mock Framework
     #
     # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -35,6 +38,7 @@ Spork.prefork do
     config.extend ControllerMacros, :type => :controller
     config.include(Warden::Test::Helpers)
     Warden.test_mode!
+    config.include Webrat::Matchers, :type => :views
 
     config.infer_base_class_for_anonymous_controllers = false
 
@@ -111,6 +115,7 @@ require 'rspec/autorun'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
+  config.infer_spec_type_from_file_location!
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -135,6 +140,7 @@ RSpec.configure do |config|
 
   config.include(Warden::Test::Helpers)
   Warden.test_mode!
+  config.include Webrat::Matchers, :type => :views
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
