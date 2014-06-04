@@ -1,2 +1,85 @@
+<div>
 登録ユーザー数: <%=@count%>
 (うち、仮登録ユーザー数: <%=@tmp_count%>)
+</div>
+
+<h2>ユーザ一覧</h2>
+<div>
+  <table>
+    <tr>
+      <th>ユーザ名</th>
+      <th>名前</th>
+      <th>Twitter ID</th>
+      <th>メールアドレス</th>
+      <th>操作</th>
+    </tr>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.handle_name %></td>
+      <td><%= user.name %></td>
+      <td><%= user.twitter_id %></td>
+      <td><%= user.email %></td>
+      <td>編集/削除</td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<h2>応募作品一覧</h2>
+<div>
+  <table>
+    <tr>
+      <th>タイトル</th>
+      <th>詳細</th>
+      <th>登録ユーザ(本名)</th>
+      <th>公開/非公開</th>
+    </tr>
+    <% @works.each do |work| %>
+    <tr>
+      <td><%= work.title %></td>
+      <td><%= work.description %></td>
+      <td><%= work.user.handle_name %> (<%= work.user.name %>)</td>
+      <td><% if work.published %>
+	公開
+	<% else %>
+	非公開
+	<% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<h2>ダウンロードログ</h2>
+<div>
+  <table>
+    <tr>
+      <th>ユーザ名</th>
+      <th>ダウンロード時間</th>
+      <th>対象物</th>
+    </tr>
+    <% @downloads.each do |dl| %>
+    <tr>
+      <td><%= dl.user.handle_name %> (<%= dl.user.name %>)</td>
+      <td><%= dl.created_at %></td>
+      <td><%= dl.material_object.material_name %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<h2>ダウンロードカウント</h2>
+<div>
+  <table>
+    <tr>
+      <th>対象物</th>
+      <th>回数</th>
+    </tr>
+    <% @downloads_count.each do |material_name, count| %>
+    <tr>
+      <td><%= material_name %></td>
+      <td><%= count %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

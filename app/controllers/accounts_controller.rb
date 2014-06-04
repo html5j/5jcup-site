@@ -51,6 +51,21 @@ class AccountsController < ApplicationController
   def show
     @count = User.count
     @tmp_count = User.where(confirmed_at:nil).count
+    @users = User.all
+    @works = Work.all
+    downloads = Dl.all
+    @downloads = []
+    dl_count = Hash.new(0)
+    material_content = current_site.content_types.where(slug: 'materials').first
+    downloads.each do |dl|
+      dl.set_material_object(material_content)
+      @downloads << dl
+      dl_count[dl.material] += 1
+    end
+    @downloads_count = Hash.new
+    material_content.entries.all.each do |m|
+      @downloads_count[m.material_name] = dl_count[m._slug]
+    end
   end
 
   protected
