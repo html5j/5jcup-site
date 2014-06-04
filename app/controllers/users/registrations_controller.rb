@@ -4,6 +4,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   include Locomotive::ActionController::LocaleHelpers
   include ActionView::Helpers::TagHelper
   helper DeviseHelper
+  helper Devise::OmniAuth::UrlHelpers
+
 
   before_filter :require_site
   def new
@@ -12,7 +14,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'login_fb' => user_omniauth_authorize_path(:facebook)}))
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'errors' => [], 'login_fb' => user_omniauth_authorize_path(:facebook)}))
+      }
+    end
+  end
+  def new_with_provider
+    build_resource({})
+    @page ||= self.locomotive_page('/userregistration')
+
+    respond_to do |format|
+      format.html {
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource }))
       }
     end
   end

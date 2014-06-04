@@ -15,7 +15,7 @@ describe UserAccountsController do
   end
   it 'show new user registration if there is no same account and not login' do
     expect(request.env['omniauth.auth']['info']['email']).to eq('hal@email.com')
-    expect(get :create, :providor => 'facebook').to redirect_to('/users/registration/new')
+    expect(get :create, :providor => 'facebook').to redirect_to('/users/registration/new_with_provider')
     #expect(get :create, :providor => 'facebook').to change{User.find({'email' => 'hal@email.com'}).count}.from(0).to(1)
   end
 

@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Users::RegistrationsController do
   include Devise::TestHelpers
   describe "login from fb" do
-    login_admin
     before do
       request.env["devise.mapping"] = Devise.mappings[:user]
       @password = 'password'
