@@ -403,6 +403,7 @@ DEPENDENCIES
   haml-rails
   locomotive-heroku (~> 0.1.0)
   locomotive_cms (~> 2.4.1)
+  omniauth
   omniauth-facebook
   omniauth-github
   omniauth-twitter
