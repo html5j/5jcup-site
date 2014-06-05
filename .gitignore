@@ -17,3 +17,5 @@
 /db/mongo
 /public/works
 /public/site/works
+
+/.ruby-version
