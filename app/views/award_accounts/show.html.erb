@@ -57,8 +57,20 @@
 	不明
 	<% end %>
       </td>
-      <td><%= dl.user.handle_name %></td>
-      <td><%= dl.user.name %></td>
+      <td>
+	<% if dl.user %>
+	<%= dl.user.handle_name %>
+	<% else %>
+	不明
+	<% end %>
+      </td>
+      <td>
+	<% if dl.user %>
+	<%= dl.user.name %>
+	<% else %>
+	不明
+	<% end %>
+      </td>
     </tr>
     <% end %>
   </table>
