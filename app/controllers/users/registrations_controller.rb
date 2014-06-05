@@ -12,9 +12,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource({})
     @page ||= self.locomotive_page('/userregistration')
 
+    if request.env['omniauth.auth']
+      resource.email = request.env['omniauth.auth']['info']['email'] || '' if request.env['omniauth.auth']['email']
+      resource.name = request.env['omniauth.auth']['info']['name'] || '' if request.env['omniauth.auth']['name']
+      with_provider = true
+    end
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'errors' => [], 'login_fb' => user_omniauth_authorize_path(:facebook)}))
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'errors' => [],
+                                                                          'login_fb' => user_omniauth_authorize_path(:facebook),
+                                                                          'with_provider' => with_provider || false
+         }))
       }
     end
   end

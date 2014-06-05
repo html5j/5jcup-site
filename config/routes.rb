@@ -7,6 +7,7 @@ Html5jcup::Application.routes.draw do
     :confirmations => 'users/confirmations',
     :sessions => 'users/sessions',
     :passwords => 'users/passwords',
+    :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
   resources :user_accounts, :only => [:index, :create, :destroy]
