@@ -25,10 +25,12 @@ class WorksController < ApplicationController
     unless params[:title].blank?
       works = works.where(title: /#{params[:title]}/)
     end
-    unless params[:awards].blank?
-      award_ids = award_content.entries.in("_slug.ja" => params[:awards]).map(&:_id).map(&:to_s)
-      logger.debug(award_ids)
-      works = works.in(award_ids: award_ids)
+    if !params[:awards].blank? and params[:awards].kind_of?(Array)
+      awards = params[:awards].uniq.keep_if{|item| !item.blank?}
+      unless awards.blank?
+        award_ids = award_content.entries.in("_slug.ja" => awards).map(&:_id).map(&:to_s)
+        works = works.in(award_ids: award_ids)
+      end
     end
     works = works.order_by(order)
     new_works = []
