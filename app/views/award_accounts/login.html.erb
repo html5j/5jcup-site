@@ -1,0 +1,16 @@
+<h1>協賛企業ログイン</h1>
+
+<div>
+  <%= form_tag(url_for(:controller => :award_accounts, :action => :login), :method => :post) do %>
+  <legend>ログインフォーム</legend>
+  <div>
+    <%= label_tag :login_name, "ログイン名" %>
+    <%= text_field_tag(:login_name) %>
+  </div>
+  <div>
+    <%= label_tag :login_pass, "パスワード" %>
+    <%= password_field_tag(:login_pass) %>
+  </div>
+  <%= submit_tag "送信" %>
+  <% end %>
+</div>

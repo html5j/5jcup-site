@@ -1,0 +1,75 @@
+
+<style>
+  table, th, td {
+    border-width: thin;
+    border-style: solid;
+  }
+  th {
+    font-weight: bold;
+  }
+</style>
+
+<div class="head">
+  <%= @award_account._slug %> / <%= link_to "ログアウト", :controller => :award_accounts, :action => :logout %>
+</div>
+
+<h2>応募作品一覧</h2>
+<div>
+  <table>
+    <tr>
+      <th>タイトル</th>
+      <th>詳細</th>
+      <th>登録ユーザ(本名)</th>
+      <th>公開/非公開</th>
+    </tr>
+    <% @works.each do |work| %>
+    <tr>
+      <td><%= work.title %></td>
+      <td><%= work.description %></td>
+      <td><%= work.user.handle_name %> (<%= work.user.name %>)</td>
+      <td><% if work.published %>
+	公開
+	<% else %>
+	非公開
+	<% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<h2>ダウンロードログ</h2>
+<div>
+  <table>
+    <tr>
+      <th>タイムスタンプ</th>
+      <th>素材タイトル</th>
+      <th>ユーザID</th>
+      <th>本名</th>
+    </tr>
+    <% @downloads.each do |dl| %>
+    <tr>
+      <td><%= dl.created_at %></td>
+      <td><%= dl.material_object.material_name %></td>
+      <td><%= dl.user.handle_name %></td>
+      <td><%= dl.user.name %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<h2>ダウンロードカウント</h2>
+<div>
+  <table>
+    <tr>
+      <th>対象物</th>
+      <th>回数</th>
+    </tr>
+    <% @downloads_count.each do |material_name, count| %>
+    <tr>
+      <td><%= material_name %></td>
+      <td><%= count %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

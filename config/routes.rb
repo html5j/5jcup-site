@@ -14,6 +14,10 @@ Html5jcup::Application.routes.draw do
   match "/works/all" => "works#all"
   resources :works
 
+  match "/award_accounts/login" => "award_accounts#login", :as => :Dl
+  match "/award_accounts/show" => "award_accounts#show"
+  match "/award_accounts/logout" => "award_accounts#logout"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
