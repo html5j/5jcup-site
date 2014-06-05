@@ -50,7 +50,13 @@
     <% @downloads.each do |dl| %>
     <tr>
       <td><%= dl.created_at %></td>
-      <td><%= dl.material_object.material_name %></td>
+      <td>
+	<% if dl.material_object %>
+	<%= dl.material_object.material_name %>
+	<% else %>
+	不明
+	<% end %>
+      </td>
       <td><%= dl.user.handle_name %></td>
       <td><%= dl.user.name %></td>
     </tr>

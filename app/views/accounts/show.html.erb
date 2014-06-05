@@ -54,15 +54,23 @@
 <div>
   <table>
     <tr>
-      <th>ユーザ名</th>
-      <th>ダウンロード時間</th>
-      <th>対象物</th>
+      <th>タイムスタンプ</th>
+      <th>素材タイトル</th>
+      <th>ユーザID</th>
+      <th>本名</th>
     </tr>
     <% @downloads.each do |dl| %>
     <tr>
-      <td><%= dl.user.handle_name %> (<%= dl.user.name %>)</td>
       <td><%= dl.created_at %></td>
-      <td><%= dl.material_object.material_name %></td>
+      <td>
+	<% if dl.material_object %>
+	<%= dl.material_object.material_name %>
+	<% else %>
+	不明
+	<% end %>
+      </td>
+      <td><%= dl.user.handle_name %></td>
+      <td><%= dl.user.name %></td>
     </tr>
     <% end %>
   </table>
