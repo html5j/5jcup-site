@@ -8,9 +8,16 @@ describe Users::OmniauthCallbacksController do
     end
     it "facebook uid check" do
       request.env["omniauth.auth"]['uid'].should == '1234'
+      request.env["omniauth.auth"]['info']['email'].should == 'hal@email.com'
     end
-    it "redirect to create new user if no user found" do
-      expect(get :facebook).to redirect_to(edit_user_registration_url)
+    describe "redirect to create new user if no user found" do
+      subject {get :facebook}
+      it "should create new user" do
+        expect{subject}.to change{User.where({email: 'hal@email.com'}).count}.from(0).to(1)
+      end
+      it "should redirect to edit page" do
+        expect(subject).to redirect_to(edit_user_registration_url)
+      end
     end
 
   end
