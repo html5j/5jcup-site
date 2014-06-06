@@ -1,16 +1,32 @@
-<h1>協賛企業ログイン</h1>
 
-<div>
-  <%= form_tag(url_for(:controller => :award_accounts, :action => :login), :method => :post) do %>
-  <legend>ログインフォーム</legend>
-  <div>
-    <%= label_tag :login_name, "ログイン名" %>
+
+<style>
+  form {
+    padding-top: 20px;
+  }
+</style>
+
+<%= form_tag(url_for(:controller => :award_accounts, :action => :login), :method => :post) do %>
+  
+<div class="row">
+  <div class="large-3 columns">
+    <%= label_tag :login_name, "ログイン名", {:class => "right inline"} %>
+  </div>
+  <div class="large-9 columns">
     <%= text_field_tag(:login_name) %>
   </div>
-  <div>
-    <%= label_tag :login_pass, "パスワード" %>
+</div>
+<div class="row">
+  <div class="large-3 columns">
+    <%= label_tag :login_pass, "パスワード", {:class => "right inline"} %>
+  </div>
+  <div class="large-9 columns">
     <%= password_field_tag(:login_pass) %>
   </div>
-  <%= submit_tag "送信" %>
-  <% end %>
 </div>
+<div class="row">
+  <div class="large-12 columns">
+    <%= submit_tag "送信", {:class => "button right"} %>
+  </div>
+</div>
+<% end %>

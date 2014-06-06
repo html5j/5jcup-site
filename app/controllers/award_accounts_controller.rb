@@ -6,6 +6,8 @@ class AwardAccountsController < ApplicationController
   include Locomotive::ActionController::Ssl
   include Locomotive::ActionController::Timezone
 
+  
+  
   before_filter :require_account
 
   before_filter :require_site
@@ -35,6 +37,13 @@ class AwardAccountsController < ApplicationController
     end
     @works = Work.in(award_ids: [@award_account._id.to_s]).all
 
+    
+  end
+
+  def show_download
+    if @award_account.nil?
+      redirect_to :action => :login
+    end
     @downloads = []
     dl_count = Hash.new(0)
     material_content = current_site.content_types.where(slug: 'materials').first
@@ -51,7 +60,7 @@ class AwardAccountsController < ApplicationController
     end
     
   end
-
+  
   protected
 
   def require_account

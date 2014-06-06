@@ -1,93 +1,100 @@
+<% content_for :title do %>
+  協賛企業 - 応募作品一覧
+<% end %>
 
-<style>
-  table, th, td {
-    border-width: thin;
-    border-style: solid;
+<style scoped>
+  section.work {
+    border-top: 6px solid #c50021;
+    padding: 8px;
   }
-  th {
-    font-weight: bold;
+  .work-title {
+    padding-top: 8px;
+    font-size: 1.1em;
   }
+  .work-thumb-container {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .work-thumb {
+    max-width: 240px;
+    max-height: 180px;
+  }
+  .no-image {
+    width: 240px;
+    height: 180px;
+  }
+  .event-date {
+    background: url('{{ 'icon-time2.png' | theme_image_url }}') no-repeat left center;
+    padding: 0 0 0 20px;
+  }
+  .description {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 8px 0 8px;
+    height: 4em;
+    min-height: 4em;
+    overflow-y: hidden;
+  }
+  .awards {
+    height: 1em;
+    min-height: 1em;
+    overflow-y: hidden;
+  }
+  section.work:hover .description,
+  section.work:active .description,
+  section.work:hover .awards,
+  section.work:active .awards {
+    height: auto;
+    overflow-y: none;
+  }
+  .work footer {
+    text-align: right;
+    
+  }
+  ul.order {
+    list-style-type: none;
+  }
+  ul.order li {
+    display:inline;
+  }
+
 </style>
 
-<div class="head">
-  <%= @award_account._slug %> / <%= link_to "ログアウト", :controller => :award_accounts, :action => :logout %>
-</div>
 
-<h2>応募作品一覧</h2>
-<div>
-  <table>
-    <tr>
-      <th>タイトル</th>
-      <th>詳細</th>
-      <th>登録ユーザ(本名)</th>
-      <th>公開/非公開</th>
-    </tr>
-    <% @works.each do |work| %>
-    <tr>
-      <td><%= work.title %></td>
-      <td><%= work.description %></td>
-      <td><%= work.user.handle_name %> (<%= work.user.name %>)</td>
-      <td><% if work.published %>
-	公開
-	<% else %>
-	非公開
-	<% end %>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-</div>
 
-<h2>ダウンロードログ</h2>
-<div>
-  <table>
-    <tr>
-      <th>タイムスタンプ</th>
-      <th>素材タイトル</th>
-      <th>ユーザID</th>
-      <th>本名</th>
-    </tr>
-    <% @downloads.each do |dl| %>
-    <tr>
-      <td><%= dl.created_at %></td>
-      <td>
-	<% if dl.material_object %>
-	<%= dl.material_object.material_name %>
-	<% else %>
-	不明
-	<% end %>
-      </td>
-      <td>
-	<% if dl.user %>
-	<%= dl.user.handle_name %>
-	<% else %>
-	不明
-	<% end %>
-      </td>
-      <td>
-	<% if dl.user %>
-	<%= dl.user.name %>
-	<% else %>
-	不明
-	<% end %>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-</div>
+    <div class="works">
+      <% @works.each do |work| %>
+      <section class="work">
+        <div class="large-3 columns work-thumb-container">
+          <% if work.image1_url %>
+          <img src="<%= work.image1_url %>" class="work-thumb">
+          <% elsif work.image2_url %>
+          <img src="<%= work.image2_url %>" class="work-thumb">
+          <% elsif work.image3_url %>
+          <img src="<%= work.image3_url %>" class="work-thumb">
+          <% else %>
+          <span class="no-image">no image</span>
+          <% end %>
+        </div>
+        <div class='large-9 columns'>
+          <h3 class="work-title"><%= work.title %></h3>
+          <p class="work-creator">
+            制作者: 
+            <%= work.handle_name %>
+            <% if work.twitter_id %>
+            (<a href="http://twitter.com/<%= work.twitter_id %>">@<%= work.twitter_id %></a>)
+            <% end %>
+          </p>
+          <div class="description"><%= work.description %></div>
+          <%#  <div class="awards">{{work.awards_name}}</div> %>
+        </div>
+        <footer>
+          <a href='/works/<%= work.id_to_s %>'>
+            <img src="/img/etc/more-detail.png" alt="もっと詳しく">
+          </a>
+        </footer>
+      </section>
 
-<h2>ダウンロードカウント</h2>
-<div>
-  <table>
-    <tr>
-      <th>対象物</th>
-      <th>回数</th>
-    </tr>
-    <% @downloads_count.each do |material_name, count| %>
-    <tr>
-      <td><%= material_name %></td>
-      <td><%= count %></td>
-    </tr>
-    <% end %>
-  </table>
-</div>
+      <% end %>
+    </div>
