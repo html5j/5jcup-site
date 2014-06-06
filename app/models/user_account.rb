@@ -5,6 +5,7 @@ class UserAccount < Liquid::Drop
   field :uid,                 :type => String
   field :token,               :type => String
   field :auth_response,       :type => String
+  field :secret       ,       :type => String
   FACEBOOK = 'facebook'.freeze
   TWITTER = 'twitter'.freeze
 

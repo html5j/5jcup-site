@@ -1,7 +1,5 @@
 Html5jcup::Application.routes.draw do
 
-  match '/auth/:provider/callback' => 'user_accounts#create'
-
   devise_for :users, :controllers => {
     :registrations => 'users/registrations',
     :confirmations => 'users/confirmations',
