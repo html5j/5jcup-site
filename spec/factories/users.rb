@@ -14,11 +14,8 @@ FactoryGirl.define do
     id 1
     name "Hal"
     email "admin@hoge.com"
-    password ""
-    encrypted_password ""
-    to_create do |instance|
-      instance.save validate: false
-    end
+    password "raondompass!"
+    encrypted_password "encrypted"
     after(:build) do |user|
       user.user_accounts << FactoryGirl.build(:user_account)
     end

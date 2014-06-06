@@ -63,8 +63,9 @@ class User < Clot::BaseDrop
         user = User.new
         user.skip_confirmation!
         user.fetch_details(auth)
+        user.password = Devise.friendly_token[0,20]
         user.need_additional = true
-        user.save_without_password
+        user.save
       end
       authorization.user = user
       authorization.save
@@ -76,6 +77,6 @@ class User < Clot::BaseDrop
     self.email = auth.info.email
   end
   def password_required?
-    super && provider.blank?
+    super && self.user_accounts.count == 0
   end
 end
