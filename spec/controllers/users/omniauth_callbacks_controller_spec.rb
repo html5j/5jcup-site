@@ -15,6 +15,12 @@ describe Users::OmniauthCallbacksController do
       it "should create new user" do
         expect{subject}.to change{User.where({email: 'hal@email.com'}).count}.from(0).to(1)
       end
+      it "should create new user with no pass" do
+        get :facebook
+        expect(User.where({email: 'hal@email.com'}).count).to be == 1
+        expect(User.where({email: 'hal@email.com'}).first.name).to be == 'Hal Seki'
+        expect(User.where({email: 'hal@email.com'}).first.password).to be_nil
+      end
       it "should redirect to edit page" do
         expect(subject).to redirect_to(edit_user_registration_url)
       end
