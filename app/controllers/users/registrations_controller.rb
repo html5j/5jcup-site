@@ -102,7 +102,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
   def update_resource(resource, params)
-    resource.update_with_password(params)
+    if (resource.password_required?)
+      resource.update_with_password(params)
+    else
+      resource.assign_attributes(params)
+      if (params['password'].blank?)
+        resource.errors.add(:password, "を入力して下さい")
+        false
+      elsif (params['password'] != params['password_confirmation'])
+        resource.errors.add(:password, "と確認用パスワードが違います")
+        false
+      else
+        params['need_additional'] = false
+        resource.update_without_password(params)
+      end
+    end
   end
 
   def devise_error_messages!

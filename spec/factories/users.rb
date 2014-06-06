@@ -16,6 +16,7 @@ FactoryGirl.define do
     email "admin@hoge.com"
     password "raondompass!"
     encrypted_password "encrypted"
+    need_additional true
     after(:build) do |user|
       user.user_accounts << FactoryGirl.build(:user_account)
     end
