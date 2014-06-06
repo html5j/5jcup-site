@@ -77,6 +77,6 @@ class User < Clot::BaseDrop
     self.email = auth.info.email
   end
   def password_required?
-    super && self.user_accounts.count == 0
+    need_additional ? false : super
   end
 end
