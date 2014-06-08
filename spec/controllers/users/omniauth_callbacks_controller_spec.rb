@@ -44,7 +44,7 @@ describe Users::OmniauthCallbacksController do
       subject {get :facebook}
       it "should redirect to new_user" do
         expect(subject).to redirect_to(new_user_session_path)
-        expect(session).to include(:omniauth => 'facebook')
+        expect(session).to include(:omniauth)
       end
     end
 

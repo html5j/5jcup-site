@@ -8,6 +8,7 @@ class Users::SessionsController < Devise::SessionsController
   def new
     self.resource = resource_class.new(params.fetch(resource_name, {}))
     clean_up_passwords(resource)
+    self.resource.fetch_details(session[:omniauth]) if (session[:omniauth])
     @page ||= self.locomotive_page('/loginpage')
 
     respond_to do |format|

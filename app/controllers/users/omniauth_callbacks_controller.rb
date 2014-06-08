@@ -7,7 +7,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         flash[:notice] = t('devise.omniauth_callbacks.success', :kind => User::SOCIALS[params[:action].to_sym])
         redirect_to '/'
       else
-        session[:omniauth] = 'facebook'
+        session[:omniauth] = request.env['omniauth.auth'].except('extra')
         redirect_to new_user_session_path
       end
     else
