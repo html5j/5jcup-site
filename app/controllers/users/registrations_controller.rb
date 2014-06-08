@@ -12,9 +12,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource({})
     @page ||= self.locomotive_page('/userregistration')
 
-    if request.env['omniauth.auth']
-      resource.email = request.env['omniauth.auth']['info']['email'] || '' if request.env['omniauth.auth']['email']
-      resource.name = request.env['omniauth.auth']['info']['name'] || '' if request.env['omniauth.auth']['name']
+    logger.debug(request.env['omniauth.auth'])
+    if session['devise.user_attributes']
+      resource.attributes = session['devise.user_attributes']
       with_provider = true
     end
     respond_to do |format|

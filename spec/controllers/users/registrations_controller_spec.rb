@@ -13,17 +13,12 @@ describe Users::RegistrationsController do
     end
     describe "update user info with social login" do
       before do
-        @params = {
-          :name => 'Hal Seki2',
-          :handle_name => 'myHandle',
-          :twitter_id => 'twittername',
-          :user_password => 'hoghogehgoege',
-          :user_password_confirmation => 'hoghogehgoege'
+        session['devise.user_attributes'] = {
+          'email' => 'Hal Seki'
         }
       end
       it 'update user info' do
-        subject.current_user.should_not be_nil
-        subject {put :update}
+        subject {put :new}
         # doesn't work. why?
         #expect{subject}.to change(subject.current_user.name).from('Hal Seki').to('Hal Seki2')
       end

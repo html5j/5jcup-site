@@ -166,7 +166,7 @@ RSpec.configure do |config|
       {:provider => "facebook",
        :uid      => "1234",
        :info   => {:name       => "Hal Seki",
-                   :email      => "hal@email.com"},
+                   :email      => "hal@hoge.com"},
        :credentials => {:token => "testtoken234tsdf"}}
 
   OmniAuth.config.add_mock(:facebook, omniauth_hash)

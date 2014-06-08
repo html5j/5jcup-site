@@ -58,23 +58,22 @@ class User < Clot::BaseDrop
                                       :token => auth.credentials.token,
                                       :secret => auth.credentials.secret).first_or_initialize
     if authorization.user.blank?
-      user = current_user.nil? ? User.where({email => auth['info']['email']}).first : current_user
+      user = current_user.nil? ? User.where(email: auth['info']['email']).first : current_user
       if user.blank?
         user = User.new
-        user.skip_confirmation!
         user.fetch_details(auth)
         user.password = Devise.friendly_token[0,20]
         user.need_additional = true
-        user.save
       end
       authorization.user = user
-      authorization.save
+      authorization.save unless current_user.nil?
     end
     authorization.user
   end
   def fetch_details(auth)
     self.name = auth.info.name
     self.email = auth.info.email
+    self.twitter_id = auth.info.id if auth.provider == 'twitter'
   end
   def password_required?
     need_additional ? false : super
