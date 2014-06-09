@@ -1,6 +1,10 @@
 <p>ようこそ <%= @user.name %> さん!</p>
 
+<% if @user.unconfirmed_email %>
+<p>下記のリンクをクリックするとメールアドレスが変更されます。</p>
+<% else %>
 <p>下記のリンクから、本登録を完了させてください</p>
+<% end %>
 
 <p><%= link_to '本登録', confirmation_url(@user, confirmation_token: @user.confirmation_token) %></p>
 
