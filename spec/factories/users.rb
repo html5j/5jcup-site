@@ -6,6 +6,7 @@ FactoryGirl.define do
     name "Hal"
     email "hal@hoge.com"
     password "mypassword"
+    password_confirmation "mypassword"
     encrypted_password "encrypted!"
   end
 end
