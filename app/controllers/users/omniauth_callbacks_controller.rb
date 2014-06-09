@@ -2,7 +2,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def all
     user = User.from_omniauth(request.env['omniauth.auth'], current_user)
     if user.persisted?
-      if (user.user_accounts.where(providor: request.env['omniauth.auth']['providor']).first.persisted?)
+      if (user.user_accounts.where(providor: request.env['omniauth.auth']['providor']).count > 0)
         sign_in user
         flash[:notice] = t('devise.omniauth_callbacks.success', :kind => User::SOCIALS[params[:action].to_sym])
         redirect_to '/'

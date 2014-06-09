@@ -9,5 +9,5 @@ class UserAccount < Liquid::Drop
   FACEBOOK = 'facebook'.freeze
   TWITTER = 'twitter'.freeze
 
-  embedded_in :user, :class_name => "User"
+  belongs_to :user, :class_name => "User", inverse_of: :user_accounts
 end

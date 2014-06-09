@@ -7,7 +7,7 @@ class User < Clot::BaseDrop
     twitter: 'Twitter'
   }
 
-  embeds_many :user_accounts
+  has_many :user_accounts, :autosave => true, inverse_of: :user
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
