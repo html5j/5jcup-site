@@ -13,7 +13,10 @@ class Users::SessionsController < Devise::SessionsController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => self.resource, 'error' => flash[:alert]}))
+         render :inline => @page.render(self.locomotive_context({ 'user' => self.resource,
+                                                                'error' => flash[:alert],
+                                                                'login_fb' => user_omniauth_authorize_path(:facebook),
+      }))
       }
     end
   end
