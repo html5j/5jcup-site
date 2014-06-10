@@ -78,4 +78,10 @@ class User < Clot::BaseDrop
   def password_required?
     need_additional ? false : super
   end
+  def add_provider(auth)
+    self.user_accounts.create(:provider => auth.provider, :uid => auth.uid.to_s,
+                              :token => auth.credentials.token,
+                              :secret => auth.credentials.secret)
+    self.save
+  end
 end

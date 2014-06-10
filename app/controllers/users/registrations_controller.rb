@@ -47,6 +47,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         sign_up(resource_name, resource)
         respond_with resource, location: after_sign_up_path_for(resource)
       else
+        resource.add_provider(session[:omniauth]) if session.include?('omniauth')
         @page = self.locomotive_page('/registrationconfirm')
         expire_data_after_sign_in!
         respond_to do |format|

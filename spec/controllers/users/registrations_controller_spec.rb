@@ -11,17 +11,16 @@ describe Users::RegistrationsController do
         expect(subject).to_not have_selector("input#user_current_password")
       end
     end
-    describe "update user info with social login" do
-      before do
-        session['devise.user_attributes'] = {
-          'email' => 'Hal Seki'
-        }
-      end
-      it 'update user info' do
-        subject {put :new}
-        # doesn't work. why?
-        #expect{subject}.to change(subject.current_user.name).from('Hal Seki').to('Hal Seki2')
-      end
+  end
+  describe "Through oauth" do
+    before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      session[:omniauth] = OmniAuth.config.mock_auth[:facebook]
+    end
+    it "create user_account from provider info after create new user" do
+      pending
+      #post :create, {user: FactoryGirl.attributes_for(:user)}
+      #expect(User.where(email:(FactoryGirl.attributes_for(:user))['email']).count).to eq(1)
     end
   end
 end
