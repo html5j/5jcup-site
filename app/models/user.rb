@@ -5,7 +5,8 @@ class User < Clot::BaseDrop
   User::SOCIALS = {
     facebook: 'Facebook',
     twitter: 'Twitter',
-    github: 'Github'
+    github: 'Github',
+    hatena: 'はてな'
   }
 
   has_many :user_accounts, :autosave => true, inverse_of: :user
@@ -72,10 +73,11 @@ class User < Clot::BaseDrop
     authorization.user
   end
   def fetch_details(auth)
+    binding.pry
     self.name = auth.info.name
     self.email = auth.info.email
     self.twitter_id = auth.info.nickname if auth.provider == 'twitter'
-    self.handle_name = auth.info.nickname if auth.provider == 'github'
+    self.handle_name = auth.info.nickname if auth.provider == 'github' || auth.provider == 'hatena'
   end
   def password_required?
     need_additional ? false : super

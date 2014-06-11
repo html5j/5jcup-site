@@ -15,4 +15,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   ENV['TWITTER_CONSUMER_SECRET'],
   :client_options => {:authorize_path => '/oauth/authenticate'}
 
+  provider :hatena,
+  ENV['HATENA_CONSUMER_KEY'],
+  ENV['HATENA_CONSUMER_SECRET'],
+  :scope => "read_public"
+
 end
