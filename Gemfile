@@ -9,6 +9,14 @@ gem 'rmagick'
 gem 'locomotive_cms', '~> 2.4.1', :require => 'locomotive/engine'
 
 gem 'locomotive-heroku', '~> 0.1.0', :require => 'locomotive/heroku'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-github'
+gem 'omniauth-hatena'
+gem 'figaro'
+gem 'haml-rails'
+
 group :production, :staging do
   gem 'rails_12factor'
   gem 'thin'
@@ -32,6 +40,8 @@ group :test do
   gem 'rb-fsevent', '0.9.4', :require => false
   gem 'rspec-nc'
   gem 'shoulda-matchers'
+  gem 'fabrication'
+  gem 'webrat'
 end
 
 

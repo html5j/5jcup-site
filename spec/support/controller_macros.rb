@@ -18,4 +18,13 @@ module ControllerMacros
       sign_in user
     end
   end
+  def login_fbuser
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      user = FactoryGirl.create(:fbuser)
+      user.confirmed_at = Time.zone.now
+      user.save
+      sign_in user
+    end
+  end
 end
