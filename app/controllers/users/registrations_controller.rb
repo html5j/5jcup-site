@@ -72,7 +72,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name }))
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!,
+                                                                'login_fb' => user_omniauth_authorize_path(:facebook),
+                                                                'social_links' => social_links(resource),
+                                                                'username' => resource.name }))
       }
     end
   end
@@ -148,5 +151,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def after_sign_up_path_for(resource)
     '/registrationfinished'
+  end
+  def social_links(resource)
+    '<div class="sociallinks">' + User::SOCIALS.map do |s|
+      if resource.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0
+        '<li><a href="#" id="delete_' + s[0].to_s + '">' + s[1] + '連携を解除</a></li>'
+      else
+        '<li><a href="' + user_omniauth_authorize_path(s[0]) + '">' + s[1] + 'と連携</a></li>'
+      end
+    end.join() + '</div>'
   end
 end
