@@ -1,0 +1,22 @@
+<h2>ユーザ編集</h2>
+
+<%= form_for @user, {:controller => :accounts, :action => :update_user} do |f| %>
+  <%= hidden_field_tag "_id", @user._id %>
+  <div>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :handle_name %>
+    <%= f.text_field :handle_name %>
+  </div>
+  <div>
+    <%= f.label :twitter_id %>
+    <%= f.text_field :twitter_id %>
+  </div>
+  <div>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+  <%= f.submit "変更" %>
+<% end %>

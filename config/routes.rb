@@ -11,6 +11,14 @@ Html5jcup::Application.routes.draw do
   mount Locomotive::Engine => '/locomotive', as: 'locomotive' # you can change the value of the path, by default set to "/locomotive"
   match "/dl/:slug" => "dl#show", :as => :Dl
   match "/accounts" => "accounts#show", :as => :Dl
+  match "/accounts/edit_user" => "accounts#edit_user", :as => :user
+  match "/accounts/update_user" => "accounts#update_user", :as => :user
+  match "/accounts/delete_user" => "accounts#delete_user", :as => :user
+  match "/accounts/show_works" => "accounts#show_works", :as => :work
+  match "/accounts/edit_work" => "accounts#edit_work", :as => :work
+  match "/accounts/update_work" => "accounts#update_work", :as => :work
+  match "/accounts/delete_work" => "accounts#delete_work", :as => :work
+  match "/accounts/show_downloads" => "accounts#show_downloads", :as => :Dl
   match "/works/all" => "works#all"
   resources :works
 

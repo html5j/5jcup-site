@@ -1,6 +1,5 @@
-<div>
-登録ユーザー数: <%=@count%>
-(うち、仮登録ユーザー数: <%=@tmp_count%>)
+<div class="links">
+  <span>ユーザ一覧 / <%= link_to "作品一覧", :controller => :accounts, :action => :show_works %> / <%= link_to "ダウンロード", :controller => :accounts, :action => :show_downloads %></span>
 </div>
 
 <h2>ユーザ一覧</h2>
@@ -19,87 +18,22 @@
       <td><%= user.name %></td>
       <td><%= user.twitter_id %></td>
       <td><%= user.email %></td>
-      <td>編集/削除</td>
-    </tr>
-    <% end %>
-  </table>
-</div>
-
-<h2>応募作品一覧</h2>
-<div>
-  <table>
-    <tr>
-      <th>タイトル</th>
-      <th>詳細</th>
-      <th>登録ユーザ(本名)</th>
-      <th>公開/非公開</th>
-    </tr>
-    <% @works.each do |work| %>
-    <tr>
-      <td><%= work.title %></td>
-      <td><%= work.description %></td>
-      <td><%= work.user.handle_name %> (<%= work.user.name %>)</td>
-      <td><% if work.published %>
-	公開
-	<% else %>
-	非公開
-	<% end %>
+      <td>
+	<%= link_to "編集", :controller => :accounts, :action => :edit_user, :_id => user._id %>
+	/
+	<%= link_to "削除", {:controller => :accounts, :action => :delete_user, :_id => user._id}, {:class => :user_delete} %>
       </td>
     </tr>
     <% end %>
   </table>
 </div>
 
-<h2>ダウンロードログ</h2>
-<div>
-  <table>
-    <tr>
-      <th>タイムスタンプ</th>
-      <th>素材タイトル</th>
-      <th>ユーザID</th>
-      <th>本名</th>
-    </tr>
-    <% @downloads.each do |dl| %>
-    <tr>
-      <td><%= dl.created_at %></td>
-      <td>
-	<% if dl.material_object %>
-	<%= dl.material_object.material_name %>
-	<% else %>
-	不明
-	<% end %>
-      </td>
-      <td>
-	<% if dl.user %>
-	<%= dl.user.handle_name %>
-	<% else %>
-	不明
-	<% end %>
-      </td>
-      <td>
-	<% if dl.user %>
-	<%= dl.user.name %>
-	<% else %>
-	不明
-	<% end %>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-</div>
-
-<h2>ダウンロードカウント</h2>
-<div>
-  <table>
-    <tr>
-      <th>対象物</th>
-      <th>回数</th>
-    </tr>
-    <% @downloads_count.each do |material_name, count| %>
-    <tr>
-      <td><%= material_name %></td>
-      <td><%= count %></td>
-    </tr>
-    <% end %>
-  </table>
-</div>
+<script>
+  $('a.user_delete').click(function() {
+    if (confirm("ユーザを削除します、よろしいですか？")) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+</script>

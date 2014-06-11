@@ -1,0 +1,44 @@
+<div class="links">
+  <span><%= link_to "ユーザ一覧", :controller => :accounts, :action => :show %> / 作品一覧 / <%= link_to "ダウンロード", :controller => :accounts, :action => :show_downloads %></span>
+</div>
+
+<h2>応募作品一覧</h2>
+<div>
+  <table>
+    <tr>
+      <th>タイトル</th>
+      <th>詳細</th>
+      <th>登録ユーザ(本名)</th>
+      <th>公開/非公開</th>
+      <th>編集/削除</th>
+    </tr>
+    <% @works.each do |work| %>
+    <tr>
+      <td><%= work.title %></td>
+      <td><%= work.description %></td>
+      <td><%= work.user.handle_name %> (<%= work.user.name %>)</td>
+      <td><% if work.published %>
+	公開
+	<% else %>
+	非公開
+	<% end %>
+      </td>
+      <td>
+	<%= link_to "編集", :controller => :accounts, :action => :edit_work, :_id => work._id %>
+	/
+	<%= link_to "削除", {:controller => :accounts, :action => :delete_work, :_id => work._id}, {:class => :work_delete} %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<script>
+  $('a.work_delete').click(function() {
+    if (confirm("作品を削除します、よろしいですか？")) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+</script>

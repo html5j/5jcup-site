@@ -1,0 +1,454 @@
+<% if @work.members.nil? %>
+  <% member_json = '[]' %>
+<% else %>
+  <% member_json = @work.members.to_json %>
+<% end %>
+<style>
+  .clearfix:after { 
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden; 
+  }
+  .clearfix { 
+    display: inline-block;  
+  }
+  * html .clearfix {  
+    height: 1%;  
+  } /* Hides from IE-mac \*/
+  .clearfix {  
+    display: block;  
+  }
+  .prize, .supplementary_prize {
+    display: inline-block;
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 0px 5px;
+    font-size: 14px;
+    margin-left: 6px;
+  }
+  .awards h2 {
+    font-size: 1.2em;
+    border-bottom: 1px dotted gray;
+    padding-bottom: 0.2em;
+    margin-bottom: 0.5em;
+  }
+  .awards  {
+    padding: 0;
+    margin-top: 1em;
+  }
+  .awards ul {
+    list-style: none;
+  }
+  .awards ul li input {
+    margin-right: 1em;
+  }
+  .awards ul li {
+    line-height: 1.5;
+    display: block;
+    float: left;
+    width: 50%;
+  }
+  #theme_list li {
+    float: none;
+    width: 100%;
+  }
+  .columns > label {
+    color: black;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .row .row {
+    margin-bottom: 1em;
+  }
+  textarea {
+    min-height: 5em;
+  }
+  .confirm {
+    margin-top: 3em !important;
+  }
+  .confirm > div {
+    text-align: center;
+  }
+  .confirm label {
+    font-size: 1em;
+    font-weight: normal;
+  }
+</style>
+<main>
+ <div class='row' id="main-container">
+  <div class='large-12 columns'>
+    <h1>作品の応募</h1>
+   <div class="workedit">
+    <%= form_for @work, :url => {:controller => :accounts, :action => :update_work}, :html => {:multipart => true} do |f| %>
+      <div class='hidden'>
+        <%= hidden_field_tag "_id", @work._id %>
+        <input name='utf8' type='hidden' value='✓'>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <label for="work_handle_name">応募者のお名前</label>
+          <p class="form-description">
+            応募者の名前を20文字以内で入力してください。（必須）<br>本名である必要はなく、任意のニックネームで構いません。<br>
+            また、チームや企業での応募の場合は、チーム名や企業名をご入力ください（各メンバーの名前は、以下の「メンバー名」欄にご入力ください）。
+          </p>
+        <%= f.text_field :handle_name %><br />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :twitter_id %>
+          <p class="form-description">
+            ツイッターアカウントを20文字以内で入力してください（任意）
+          </p>
+        <%= f.text_field :twitter_id %><br />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <label for="work_members">チームメンバー</label>
+          <p class="form-description">
+            チームでのご応募の場合、メンバー名を人数分入力してください（任意）。<br>
+            下の「入力欄を追加」ボタンを押すと、入力欄を増やすことができます。<br>
+            各メンバーの名前は、本名ではなくニックネームでも構いません。
+          </p>
+          <div id="members"></div><input type="button" value="入力欄を追加" id="addmember" class="button tiny">
+        <br />
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :title %>
+          <p class="form-description">
+            作品タイトルを40文字以内で入力してください（必須）
+          </p>
+        <%= f.text_field :title %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <label for="work_description">作品の概要</label>
+          <p class="form-description">
+            作品の概要を、500文字以内で入力してください。（必須）
+          </p>
+        <%= f.text_area :description %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+          <label for="work_award_ids">賞へのエントリー</label>
+          <% @awards.each do |award| %>
+            <% if award[0] == 'テーマ' %>
+          <section class="awards">
+          <h2><%= award[0] %></h2>
+          <p class="form-description">
+            作品の「お題」として選択したテーマです。（必須）
+          </p>
+          <ul id="theme_list" class="clearfix">
+	    <% award[1].each do |item| %>
+	      <li>
+	      <% title, value, checked = award_option(@work, item) %>
+	      <%= radio_button_tag "work[award_ids][]", value, checked %>
+	      <%= title %>
+	      </li>
+	    <% end %>
+          </ul>
+          </section>
+	    <% end %>
+	  <% end %>
+          <% @awards.each do |award| %>
+            <% if award[0] == 'プラットフォーム' %>
+          <section class="awards">
+          <h2><%= award[0] %> </h2>
+          <p class="form-description">
+            作品が動作するプラットフォームを選択してください。（複数選択可）
+          </p>
+          <ul class="clearfix">
+	    <% award[1].each do |item| %>
+	      <li>
+	      <% title, value, checked = award_option(@work, item) %>
+	      <%= check_box_tag "work[award_ids][]", value, checked %>
+	      <%= title %>
+	      </li>
+	    <% end %>
+          </ul>
+          </section>
+	    <% end %>
+	  <% end %>
+          <% @awards.each do |award| %>
+            <% if award[0] == 'ライブラリ・API' %>
+          <section class="awards">
+          <h2><%= award[0] %> </h2>
+          <p class="form-description">
+            作品で使用したライブラリやAPIがあれば選択してください。（複数選択可）
+          </p>
+          <ul class="clearfix">
+	    <% award[1].each do |item| %>
+	      <li>
+	      <% title, value, checked = award_option(@work, item) %>
+	      <%= check_box_tag "work[award_ids][]", value, checked %>
+	      <%= title %>
+	      </li>
+	    <% end %>
+          </ul>
+          </section>
+	  <% end %>
+	  <% end %>
+          <% @awards.each do |award| %>
+            <% if award[0] == 'ノンジャンル' %>
+          <section class="awards">
+          <h2>ノンジャンル</h2>
+          <p class="form-description">
+            その他様々な賞にエントリーできます。（複数選択可、最大3つまで）
+          </p>
+          <ul class="clearfix">
+	    <% award[1].each do |item| %>
+	      <li>
+	      <% title, value, checked = award_option(@work, item) %>
+	      <%= check_box_tag "work[award_ids][]", value, checked %>
+	      <%= title %>
+	      </li>
+	    <% end %>
+          </ul>
+          </section>
+	  <% end %>
+	  <% end %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <label>作品のプレビュー画像</label>
+          <p class="form-description">
+            作品のプレビュー画像をアップロードしてください。<br>
+            最大3枚までアップロードできます。推奨する画像サイズは1280x800ピクセル以上です。
+          </p>
+          <div class="work-image">
+          画像1
+            <% if @work.image1_url %>
+              <a href="<%= @work.image1_url %>" target="_blank"><img src="<%= @work.image1_url %>"/></a>
+              <%= f.hidden_field :image1_cache %>
+            <% end %>
+          <%= f.file_field :image1 %>
+          </div>
+          <div class="work_image">
+          画像2
+            <% if @work.image2_url %>
+            <a href="<%= @work.image2_url %>" target="_blank"><img src="<%= @work.image2_url %>"/></a>
+            <%= f.hidden_field :image2_cache %>
+            <% end %>
+          <%= f.file_field :image2 %>
+          </div>
+          <div class="work_image">
+          画像3
+            <% if @work.image3_url %>
+	       <a href="<%= @work.image3_url %>" target="_blank">
+            <img src="<%= @work.image3_url %>"/></a>
+            <% f.hidden_field :image3_cache %>
+            <% end %>
+          <%= f.file_field :image3 %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :url %>
+          <p class="form-description">
+            作品を公開しているWebサイトのURLを入力してください。<br>
+            WebアプリのURL、モバイルアプリストア上でのURL、アプリケーションをダウンロード可能なWebページのURLなど、
+            どのような種類のURLでも構いません。<br>
+            もし、Webサイトに認証をかけている場合には、自由記入欄に審査員が利用可能な認証情報（ID、パスワードなど）を忘れずに記載して下さい。<br>
+            審査員がアプリをダウンロードして端末にインストールする必要がある場合には、ページ上にその手順を簡潔に記載してください。
+            （インストール方法が不明瞭な場合、審査対象とならない可能性があります）
+          </p>
+          <%= f.text_field :url %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <label>アプリケーションのアップロード</label>
+          <p class="form-description">
+            Android、Firefox OS、Windowsストアアプリ、Chrome Appsなどのプラットフォーム上で動作する
+            アプリケーションを直接アップロードすることができます。<br>
+            アプリストアへの公開やダウンロード用のWebページを作成せずに応募を行うための、簡便な方法です。<br>
+            <strong>iOSアプリは、App Store経由でなければ端末へのインストールが許可されていないため、こちらの方法を用いて
+              作品を応募していただくことはできません。</strong>
+          </p>
+	  <% if @work.file_url %>
+            <a href="<%= @work.file_url %>" target="_blank"><%= @work.file %></a>
+            <% f.hidden_field :file_cache %>
+          <% end %>
+          <%= f.file_field :file %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :technical_appeal_point %>
+          <p class="form-description">
+            この作品における技術的なアピールポイントを、500字以内で入力してください（任意）。<br>
+            狙っている賞の審査員に向けて、心に響くような文章にするのがコツです！
+          </p>
+          <%= f.text_area :technical_appeal_point %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :plan_appeal_point %>
+          <p class="form-description">
+            この作品におけるアイデア上のアピールポイントを、500字以内で入力してください（任意）。<br>
+            狙っている賞の審査員に向けて、心に響くような文章にするのがコツです！
+          </p>
+          <%= f.text_area :plan_appeal_point %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :remarks %>
+          <p class="form-description">
+            HTML5 Japan Cupに関するご意見やご感想、作品について語り足りないことなど、好きに記入して頂いて構いません（任意、500字以内）。<br>
+            また、審査するのに特定の認証情報（ID/パスワードなど）を必要とする場合は、この欄に忘れずに記入してください。
+          </p>
+          <%= f.text_area :remarks %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 columns">
+          <%= f.label :published %>
+          <p class="form-description">
+            この作品を、応募作品一覧に表示するかどうか。<br>
+            「表示する」を選択すると、応募作品一覧に掲載され、他のユーザからも触ってもらえるようになります。<br>
+            （応募作品一覧は、現在準備中です）
+          </p>
+          <label style="font-weight: normal; font-size: small;">
+          <%= f.check_box :published %>
+          表示する
+          </label>
+        </div>
+      </div>
+<div class="row">
+  <div class="large-12 columns">
+    <div class="large-6 columns">
+      <%= f.submit "更新する" %>
+    </div>
+  </div>
+</div>
+    <% end %>
+    </div>
+  </div>
+ </div>
+</main>
+<script>
+  var addmemberfield = function(value){
+    $('#members').append('<input maxlength="20" mouseev="true" name="work[members][]" type="text" value="' + value + '">');
+  }
+  $('#addmember').click(function(){
+    addmemberfield('');
+  });
+  var members = <%= raw(member_json) %>;
+  $.each(members, function(key,val){
+    addmemberfield(val);
+  });
+  addmemberfield('');
+</script>
+
+
+<script>
+  $('form').bind('submit', function(e){
+    var work_title = $('#work_title')[0],
+        work_description = $('#work_description')[0],        
+        themes = $('#theme_list input[type=radio]'),
+        awards = $('h2:contains("ノンジャンル")').parent().find('input[type=checkbox]'),
+        work_url = $('#work_url')[0],
+        work_technical_appeal_point = $('#work_technical_appeal_point')[0],
+        work_plan_appeal_point = $('#work_plan_appeal_point')[0],
+        work_remarks = $('#work_remarks')[0],
+
+    // 作品タイトル
+    if ( !work_title.value ) {
+      warning('作品タイトルを入力してください', work_title);
+      return false;
+    }
+    if ( work_title.value.length > 40 ) {
+      warning('作品タイトルは、40文字以内で入力してください', work_title);
+      return false;
+    }
+
+    // 作品概要
+    if ( !work_description.value ) {
+      warning('作品の概要を入力してください', work_description);
+      return false;
+    }
+    if ( work_description.value.length > 500 ) {
+      warning('作品の概要は、500文字以内で入力してください', work_description);
+      return false;
+    }
+
+    // テーマ
+    var themeCount = 0;
+    for ( var i = 0, n = themes.length; i < n; i++ ) {
+      if ( themes[i].checked ) {
+        themeCount++;
+      }
+    }
+    if ( themeCount === 0 ) {
+      warning('テーマをひとつ選択してください', themes[0]);
+      return false;
+    }
+    if ( themeCount > 1 ) {
+      warning('テーマは、1つだけ選択してください', themes[0]);
+      return false;
+    }
+
+    // ノンジャンル賞
+    var awardCount = 0;
+    for ( var i = 0, n = awards.length; i < n; i++ ) {
+      if ( awards[i].checked ) {
+        awardCount++;
+      }
+    }
+    if ( awardCount > 3 ) {
+      warning('ノンジャンルの賞は、3つまで選択してください', awards[0]);
+      return false;
+    }
+
+    // 作品URL
+    if ( work_url.value ) {
+      var re = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?$/;
+      if ( !re.test(work_url.value) ) {
+        warning('作品URLには、正しいURLを入力してください', work_url);
+        return false;
+      }
+    }
+
+    // 技術的なアピールポイント
+    if ( work_technical_appeal_point.value && work_technical_appeal_point.value.length > 500 ) {
+      warning('技術的なアピールポイントは、500文字以内で入力してください', work_technical_appeal_point);
+      return false;
+    }
+
+    // 企画上のアピールポイント
+    if ( work_plan_appeal_point.value && work_plan_appeal_point.value.length > 500 ) {
+      warning('企画上のアピールポイントは、500文字以内で入力してください', work_plan_appeal_point);
+      return false;
+    }
+
+    // 自由記入欄
+    if ( work_remarks.value && work_remarks.value.length > 500 ) {
+      warning('自由記入欄は、500文字以内で入力してください', work_remarks);
+      return false;
+    }
+
+  });
+
+  function warning(msg, target) {
+    alert(msg);
+    if ( target ) {
+      target.focus();
+    }
+  }
+</script>
+<script>
+/*$(function() {
+    $( document ).tooltip();
+  });*/
+</script>

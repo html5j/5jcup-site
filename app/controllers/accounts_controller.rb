@@ -5,6 +5,7 @@ class AccountsController < ApplicationController
   include Locomotive::ActionController::UrlHelpers
   include Locomotive::ActionController::Ssl
   include Locomotive::ActionController::Timezone
+  include Fivejcup::Award
 
   layout '/locomotive/layouts/application'
 
@@ -49,10 +50,61 @@ class AccountsController < ApplicationController
   sections 'settings'
 
   def show
-    @count = User.count
-    @tmp_count = User.where(confirmed_at:nil).count
     @users = User.all
+  end
+
+  def edit_user
+    @user = User.where(_id: params["_id"]).first
+  end
+
+  def update_user
+    @user = User.where(_id: params["_id"]).first
+    if @user
+      @user.update_attributes(params[:user])
+      if @user.save!
+        redirect_to :action => :show
+      else
+        render :action => :edit_user
+      end
+    end
+  end
+
+  def delete_user
+    @user = User.where(_id: params["_id"]).first
+    @user.destroy
+    redirect_to :action => :show
+  end
+  
+  def show_works
     @works = Work.all
+  end
+
+  def edit_work
+    @work = Work.where(_id: params["_id"]).first
+    @awards = awards
+  end
+
+  def update_work
+    params['work']['members'].reject!{|e| e.empty? }
+    @work = Work.find(params['_id'])
+    @work.attributes = params['work']
+    award_content = current_site.content_types.where(slug: 'awards').first
+    @work.awards = award_content.entries
+    if @work.save
+      redirect_to :action => :show_works
+    else
+      @awards = awards
+      render :action => :edit_work
+    end
+  end
+
+  def delete_work
+    @work = Work.where(_id: params["_id"]).first
+    @work.destroy
+    redirect_to :action => :show_works
+  end
+  
+  def show_downloads
     downloads = Dl.all
     @downloads = []
     dl_count = Hash.new(0)
@@ -67,7 +119,7 @@ class AccountsController < ApplicationController
       @downloads_count[m.material_name] = dl_count[m._slug]
     end
   end
-
+  
   protected
 
   def set_current_thread_variables
