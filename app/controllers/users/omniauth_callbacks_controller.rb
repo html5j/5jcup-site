@@ -5,7 +5,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       if (user.user_accounts.where(providor: request.env['omniauth.auth']['providor']).count > 0)
         sign_in user
         flash[:notice] = t('devise.omniauth_callbacks.success', :kind => User::SOCIALS[params[:action].to_sym])
-        redirect_to '/'
+        redirect_to edit_user_registration_path
       else
         session[:omniauth] = request.env['omniauth.auth'].except('extra')
         redirect_to new_user_session_path

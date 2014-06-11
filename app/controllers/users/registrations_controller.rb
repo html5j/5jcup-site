@@ -155,12 +155,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     '/registrationfinished'
   end
   def social_links(resource, text = 'と連携')
-    '<div class="sociallinks">' + User::SOCIALS.map do |s|
-      if resource.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0
-        '<li><a href="#" id="delete_' + s[0].to_s + '">' + s[1] + '連携を解除</a></li>'
-      else
-        '<li><a href="' + user_omniauth_authorize_path(s[0]) + '">' + s[1] + text + '</a></li>'
-      end
-    end.join() + '</div>'
+    User::SOCIALS.map do |s|
+      s.push(resource.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0)
+    end
   end
 end

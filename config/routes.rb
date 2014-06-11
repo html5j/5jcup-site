@@ -15,6 +15,7 @@ Html5jcup::Application.routes.draw do
   match "/dl/:slug" => "dl#show", :as => :Dl
   match "/accounts" => "accounts#show", :as => :Dl
   match "/works/all" => "works#all"
+  match "/users/deauth/:provider" => 'user_accounts#deauth'
   resources :works
 
   # The priority is based upon order of creation:
