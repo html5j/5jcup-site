@@ -4,15 +4,35 @@ class Users::RegistrationsController < Devise::RegistrationsController
   include Locomotive::ActionController::LocaleHelpers
   include ActionView::Helpers::TagHelper
   helper DeviseHelper
+  helper Devise::OmniAuth::UrlHelpers
+
 
   before_filter :require_site
   def new
     build_resource({})
     @page ||= self.locomotive_page('/userregistration')
 
+    session.delete('devise.user_attributes') if params.include?('new') && session.include?('devise.user_attributes')
+    if session['devise.user_attributes']
+      resource.attributes = session['devise.user_attributes']
+      with_provider = true
+    end
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource}))
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'errors' => [],
+                                                                          'social_links' => resource.social_links,
+                                                                          'with_provider' => with_provider || false
+         }))
+      }
+    end
+  end
+  def new_with_provider
+    build_resource({})
+    @page ||= self.locomotive_page('/userregistration')
+
+    respond_to do |format|
+      format.html {
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource }))
       }
     end
   end
@@ -27,6 +47,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         sign_up(resource_name, resource)
         respond_with resource, location: after_sign_up_path_for(resource)
       else
+        resource.add_provider(session[:omniauth]) if session.include?('omniauth')
         @page = self.locomotive_page('/registrationconfirm')
         expire_data_after_sign_in!
         respond_to do |format|
@@ -40,7 +61,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name}))
+           render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name,
+                                                                    'social_links' => resource.social_links,
+                                                                    'with_provider' => session.include?('oauth')}))
         }
       end
     end
@@ -51,7 +74,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     respond_to do |format|
       format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name }))
+         render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!,
+                                                                'login_fb' => user_omniauth_authorize_path(:facebook),
+                                                                'social_links' => resource.social_links,
+                                                                'username' => resource.name }))
       }
     end
   end
@@ -82,7 +108,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
   def update_resource(resource, params)
-    resource.update_with_password(params)
+    if (resource.password_required?)
+      resource.update_with_password(params)
+    else
+      resource.assign_attributes(params)
+      if (params['password'].blank?)
+        resource.errors.add(:password, "を入力して下さい")
+        false
+      elsif (params['password'] != params['password_confirmation'])
+        resource.errors.add(:password, "と確認用パスワードが違います")
+        false
+      else
+        params['need_additional'] = false
+        resource.update_without_password(params)
+      end
+    end
   end
 
   def devise_error_messages!

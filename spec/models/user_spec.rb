@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe User do
 
-  it { should validate_presence_of(:name) }
   describe '.new' do
     context 'given valid attributes' do
       subject { User.new(:email => 'hal@plants-web.jp', :password => 'password', :name => 'ハル') }
@@ -32,6 +31,16 @@ describe User do
         subject { Work.all }
         it { should have(0).items }
       }
+    end
+  end
+  describe '.add_provider' do
+    before do
+      @user = FactoryGirl.create(:user)
+      @auth = OmniAuth.config.mock_auth[:facebook]
+    end
+    it 'should create UserAccount model' do
+      @user.add_provider(@auth)
+      expect(@user.user_accounts.count).to eq(1)
     end
   end
 

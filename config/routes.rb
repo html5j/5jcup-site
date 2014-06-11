@@ -4,8 +4,11 @@ Html5jcup::Application.routes.draw do
     :registrations => 'users/registrations',
     :confirmations => 'users/confirmations',
     :sessions => 'users/sessions',
-    :passwords => 'users/passwords'
+    :passwords => 'users/passwords',
+    :omniauth_callbacks => "users/omniauth_callbacks"
   }
+
+  resources :user_accounts, :only => [:index, :create, :destroy]
 
 
   mount Locomotive::Engine => '/locomotive', as: 'locomotive' # you can change the value of the path, by default set to "/locomotive"
@@ -20,6 +23,7 @@ Html5jcup::Application.routes.draw do
   match "/accounts/delete_work" => "accounts#delete_work", :as => :work
   match "/accounts/show_downloads" => "accounts#show_downloads", :as => :Dl
   match "/works/all" => "works#all"
+  match "/users/deauth/:provider" => 'user_accounts#deauth'
   resources :works
 
   match "/award_accounts/login" => "award_accounts#login", :as => :Dl

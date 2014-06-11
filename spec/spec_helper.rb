@@ -2,6 +2,8 @@ require 'rubygems'
 require 'spork'
 require 'factory_girl'
 require 'shoulda-matchers'
+require 'webrat'
+
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -35,6 +37,7 @@ Spork.prefork do
     config.extend ControllerMacros, :type => :controller
     config.include(Warden::Test::Helpers)
     Warden.test_mode!
+    config.include Webrat::Matchers, :type => :views
 
     config.infer_base_class_for_anonymous_controllers = false
 
@@ -50,6 +53,15 @@ Spork.prefork do
       DatabaseCleaner[:mongoid].clean
       Warden.test_reset!
     end
+    OmniAuth.config.test_mode = true
+    omniauth_hash =
+        {:provider => "facebook",
+         :uid      => "1234",
+         :info   => {:name       => "Hal Seki",
+                     :email      => "hal@email.com"},
+         :credentials => {:token => "testtoken234tsdf"}}
+
+    OmniAuth.config.add_mock(:facebook, omniauth_hash)
   end
 
 end
@@ -126,6 +138,7 @@ RSpec.configure do |config|
 
   config.include(Warden::Test::Helpers)
   Warden.test_mode!
+  config.include Webrat::Matchers, :type => :views
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
@@ -147,6 +160,16 @@ RSpec.configure do |config|
     DatabaseCleaner[:mongoid].clean
     Warden.test_reset!
   end
+
+  OmniAuth.config.test_mode = true
+  omniauth_hash =
+      {:provider => "facebook",
+       :uid      => "1234",
+       :info   => {:name       => "Hal Seki",
+                   :email      => "hal@hoge.com"},
+       :credentials => {:token => "testtoken234tsdf"}}
+
+  OmniAuth.config.add_mock(:facebook, omniauth_hash)
 end
 Spork.each_run do
   # This code will be run each time you run your specs.
