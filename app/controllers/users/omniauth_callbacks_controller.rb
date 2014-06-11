@@ -11,6 +11,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         redirect_to new_user_session_path
       end
     else
+      session[:omniauth] = request.env['omniauth.auth'].except('extra')
       session['devise.user_attributes'] = user.attributes
       redirect_to new_user_registration_url
     end
