@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource({})
     @page ||= self.locomotive_page('/userregistration')
 
-    logger.debug(request.env['omniauth.auth'])
+    session.delete('devise.user_attributes') if params.include?('new') && session.include?('devise.user_attributes')
     if session['devise.user_attributes']
       resource.attributes = session['devise.user_attributes']
       with_provider = true
@@ -20,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'errors' => [],
-                                                                          'login_fb' => user_omniauth_authorize_path(:facebook),
+                                                                          'social_links' => social_links(resource, '経由で登録'),
                                                                           'with_provider' => with_provider || false
          }))
       }
@@ -61,7 +61,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name}))
+           render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name,
+                                                                    'social_links' => social_links(resource, '経由で登録'),
+                                                                    'with_provider' => session.include?('oauth')}))
         }
       end
     end
@@ -152,12 +154,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_sign_up_path_for(resource)
     '/registrationfinished'
   end
-  def social_links(resource)
+  def social_links(resource, text = 'と連携')
     '<div class="sociallinks">' + User::SOCIALS.map do |s|
       if resource.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0
         '<li><a href="#" id="delete_' + s[0].to_s + '">' + s[1] + '連携を解除</a></li>'
       else
-        '<li><a href="' + user_omniauth_authorize_path(s[0]) + '">' + s[1] + 'と連携</a></li>'
+        '<li><a href="' + user_omniauth_authorize_path(s[0]) + '">' + s[1] + text + '</a></li>'
       end
     end.join() + '</div>'
   end

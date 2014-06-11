@@ -73,7 +73,7 @@ class User < Clot::BaseDrop
   def fetch_details(auth)
     self.name = auth.info.name
     self.email = auth.info.email
-    self.twitter_id = auth.info.id if auth.provider == 'twitter'
+    self.twitter_id = auth.info.nickname if auth.provider == 'twitter'
   end
   def password_required?
     need_additional ? false : super
