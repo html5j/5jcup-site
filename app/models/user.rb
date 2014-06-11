@@ -4,7 +4,8 @@ class User < Clot::BaseDrop
 
   User::SOCIALS = {
     facebook: 'Facebook',
-    twitter: 'Twitter'
+    twitter: 'Twitter',
+    github: 'Github'
   }
 
   has_many :user_accounts, :autosave => true, inverse_of: :user
@@ -12,7 +13,7 @@ class User < Clot::BaseDrop
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook, :twitter]
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => User::SOCIALS.map{|s| s[0].to_sym}
 
 
   field :name,               :type => String
@@ -74,6 +75,7 @@ class User < Clot::BaseDrop
     self.name = auth.info.name
     self.email = auth.info.email
     self.twitter_id = auth.info.nickname if auth.provider == 'twitter'
+    self.handle_name = auth.info.nickname if auth.provider == 'github'
   end
   def password_required?
     need_additional ? false : super
