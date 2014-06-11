@@ -73,7 +73,6 @@ class User < Clot::BaseDrop
     authorization.user
   end
   def fetch_details(auth)
-    binding.pry
     self.name = auth.info.name
     self.email = auth.info.email
     self.twitter_id = auth.info.nickname if auth.provider == 'twitter'
