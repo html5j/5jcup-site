@@ -77,6 +77,12 @@ class AccountsController < ApplicationController
   
   def show_works
     @works = Work.all
+    @award_count = {}
+    award_content = current_site.content_types.where(slug: 'awards').first
+    award_content.entries.each do |award|
+      count = Work.in(award_ids: [award._id.to_s]).count
+      @award_count[award] = count
+    end
   end
 
   def edit_work

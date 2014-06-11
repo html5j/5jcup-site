@@ -33,6 +33,21 @@
   </table>
 </div>
 
+<h2>賞ごとの応募数</h2>
+<div>
+  <table>
+    <tr>
+      <th>賞</th>
+      <th>カウント</th>
+    </tr>
+    <% @award_count.each do |award, count| %>
+    <tr>
+      <td><%= award.title %></td>
+      <td><%= count %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
 <script>
   $('a.work_delete').click(function() {
     if (confirm("作品を削除します、よろしいですか？")) {
