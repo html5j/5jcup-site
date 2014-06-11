@@ -20,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'errors' => [],
-                                                                          'social_links' => social_links(resource, '経由で登録'),
+                                                                          'social_links' => resource.social_links,
                                                                           'with_provider' => with_provider || false
          }))
       }
@@ -62,7 +62,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_to do |format|
         format.html {
            render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!, 'username' => resource.name,
-                                                                    'social_links' => social_links(resource, '経由で登録'),
+                                                                    'social_links' => resource.social_links,
                                                                     'with_provider' => session.include?('oauth')}))
         }
       end
@@ -76,7 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!,
                                                                 'login_fb' => user_omniauth_authorize_path(:facebook),
-                                                                'social_links' => social_links(resource),
+                                                                'social_links' => resource.social_links,
                                                                 'username' => resource.name }))
       }
     end
@@ -153,10 +153,5 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def after_sign_up_path_for(resource)
     '/registrationfinished'
-  end
-  def social_links(resource, text = 'と連携')
-    User::SOCIALS.map do |s|
-      s.push(resource.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0)
-    end
   end
 end

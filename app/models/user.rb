@@ -84,4 +84,9 @@ class User < Clot::BaseDrop
                               :secret => auth.credentials.secret)
     self.save
   end
+  def social_links
+    User::SOCIALS.map do |s|
+      s.push(self.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0)
+    end
+  end
 end

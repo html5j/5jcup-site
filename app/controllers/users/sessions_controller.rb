@@ -15,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'user' => self.resource,
                                                                 'error' => flash[:alert],
-                                                                'social_links' => self.social_links(resource)
+                                                                'social_links' => resource.social_links
       }))
       }
     end
@@ -38,10 +38,5 @@ class Users::SessionsController < Devise::SessionsController
     })
     resource.save
     session.delete(:omniauth)
-  end
-  def social_links(resource)
-    '<div class="sociallinks">' + User::SOCIALS.map do |s|
-        '<li><a href="' + user_omniauth_authorize_path(s[0]) + '">' + s[1] + '経由でログイン</a></li>'
-    end.join() + '</div>'
   end
 end
