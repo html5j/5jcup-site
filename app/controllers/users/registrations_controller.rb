@@ -95,12 +95,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_with resource, location: '/userupdated'
     else
       clean_up_passwords resource
-      logger.debug resource.errors
       @page ||= self.locomotive_page('/useredit')
 
       respond_to do |format|
         format.html {
-           render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages! }))
+           render :inline => @page.render(self.locomotive_context({ 'user' => resource,
+                                                                    'error' => devise_error_messages!,
+                                                                    'login_fb' => user_omniauth_authorize_path(:facebook),
+                                                                    'social_links' => resource.social_links,
+                                                                    'username' => resource.name }))
         }
       end
     end
@@ -108,7 +111,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
   def update_resource(resource, params)
-    if (resource.password_required?)
+    if (resource.password_required? || !resource.need_additional)
       resource.update_with_password(params)
     else
       resource.assign_attributes(params)
