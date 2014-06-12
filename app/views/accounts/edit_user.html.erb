@@ -1,6 +1,6 @@
 <h2>ユーザ編集</h2>
 
-<%= form_for @user, {:controller => :accounts, :action => :update_user} do |f| %>
+<%= form_for @user, :url => {:controller => :accounts, :action => :update_user} do |f| %>
   <%= hidden_field_tag "_id", @user._id %>
   <div>
   <%= f.label :name %>
