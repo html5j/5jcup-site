@@ -92,4 +92,8 @@ class User < Clot::BaseDrop
       s.push(self.user_accounts.select{|u| u[:provider] == s[0].to_s}.count > 0)
     end
   end
+
+  def orig_class
+    User
+  end
 end
