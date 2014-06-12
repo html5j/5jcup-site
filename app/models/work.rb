@@ -80,8 +80,8 @@ class WorkValidator
     if @work.award_ids.nil?
       @work.errors["award_ids"] << ':テーマを1つ選択してください'
     else
-      @work.errors["award_ids"] << ':テーマを1つ選択してください' unless count_by_theme(awards, @work.award_ids, 'テーマ')  == 1
-      @work.errors["award_ids"] << ':ノンジャンル賞は3つまでしか選択できません' if count_by_theme(awards, @work.award_ids, 'ノンジャンル') > 3
+      # @work.errors["award_ids"] << ':テーマを1つ選択してください' unless count_by_theme(awards, @work.award_ids, 'テーマ')  == 1
+      # @work.errors["award_ids"] << ':ノンジャンル賞は3つまでしか選択できません' if count_by_theme(awards, @work.award_ids, 'ノンジャンル') > 3
     end
   end
   private

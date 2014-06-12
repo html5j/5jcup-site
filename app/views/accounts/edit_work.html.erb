@@ -149,7 +149,7 @@
 	    <% award[1].each do |item| %>
 	      <li>
 	      <% title, value, checked = award_option(@work, item) %>
-	      <%= radio_button_tag "work[award_ids][]", value, checked %>
+	      <%= check_box_tag "work[award_ids][]", value, checked %>
 	      <%= title %>
 	      </li>
 	    <% end %>
@@ -200,7 +200,7 @@
           <section class="awards">
           <h2>ノンジャンル</h2>
           <p class="form-description">
-            その他様々な賞にエントリーできます。（複数選択可、最大3つまで）
+            その他様々な賞にエントリーできます。（複数選択可）
           </p>
           <ul class="clearfix">
 	    <% award[1].each do |item| %>
@@ -390,6 +390,7 @@
         themeCount++;
       }
     }
+    /*
     if ( themeCount === 0 ) {
       warning('テーマをひとつ選択してください', themes[0]);
       return false;
@@ -398,7 +399,7 @@
       warning('テーマは、1つだけ選択してください', themes[0]);
       return false;
     }
-
+    */
     // ノンジャンル賞
     var awardCount = 0;
     for ( var i = 0, n = awards.length; i < n; i++ ) {
@@ -406,10 +407,12 @@
         awardCount++;
       }
     }
+    /*
     if ( awardCount > 3 ) {
       warning('ノンジャンルの賞は、3つまで選択してください', awards[0]);
       return false;
     }
+    */
 
     // 作品URL
     if ( work_url.value ) {
