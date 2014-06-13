@@ -60,6 +60,8 @@ class AccountsController < ApplicationController
   def update_user
     @user = User.where(_id: params["_id"]).first
     if @user
+      @user.skip_confirmation!
+      @user.skip_reconfirmation!
       @user.update_attributes(params[:user])
       if @user.save!
         redirect_to :action => :show
