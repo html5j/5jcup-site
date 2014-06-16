@@ -75,7 +75,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     respond_to do |format|
       format.html {
          render :inline => @page.render(self.locomotive_context({ 'user' => resource, 'error' => devise_error_messages!,
-                                                                'login_fb' => user_omniauth_authorize_path(:facebook),
                                                                 'social_links' => resource.social_links,
                                                                 'username' => resource.name }))
       }
@@ -101,7 +100,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
         format.html {
            render :inline => @page.render(self.locomotive_context({ 'user' => resource,
                                                                     'error' => devise_error_messages!,
-                                                                    'login_fb' => user_omniauth_authorize_path(:facebook),
                                                                     'social_links' => resource.social_links,
                                                                     'username' => resource.name }))
         }
