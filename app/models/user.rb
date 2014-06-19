@@ -3,7 +3,6 @@ class User < Clot::BaseDrop
   validates_presence_of :name
 
   User::SOCIALS = {
-    facebook: 'Facebook',
     twitter: 'Twitter',
     github: 'Github',
     hatena: 'はてな'
