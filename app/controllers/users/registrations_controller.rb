@@ -26,18 +26,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
       }
     end
   end
-  def new_with_provider
-    build_resource({})
-    @page ||= self.locomotive_page('/userregistration')
-
-    respond_to do |format|
-      format.html {
-         render :inline => @page.render(self.locomotive_context({ 'user' => resource }))
-      }
-    end
-  end
   # POST /resource
   def create
+    if session.include?('omniauth')
+      user = params[:user].merge(:password => session[:user_password],
+                                 :password_confirmation => session[:user_password],
+                                 :need_additional => true
+                                )
+      params[:user] = user
+    end
     build_resource(params.fetch(resource_name, {}))
 
     resource_saved = resource.save
@@ -109,20 +106,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
   def update_resource(resource, params)
-    if (resource.password_required? || !resource.need_additional)
+    if !resource.need_additional? && params[:password].present?
       resource.update_with_password(params)
     else
       resource.assign_attributes(params)
-      if (params['password'].blank?)
-        resource.errors.add(:password, "を入力して下さい")
-        false
-      elsif (params['password'] != params['password_confirmation'])
-        resource.errors.add(:password, "と確認用パスワードが違います")
-        false
-      else
-        params['need_additional'] = false
-        resource.update_without_password(params)
-      end
+      resource.need_additional = false if (resource.need_additional? && params[:password].present?)
+
+      resource.update_without_password(params)
     end
   end
 

@@ -3,6 +3,10 @@ class User < Clot::BaseDrop
   validates_presence_of :name
 
   User::SOCIALS = {
+    facebook: 'Facebook',
+    twitter: 'Twitter',
+    github: 'Github',
+    hatena: 'はてな'
   }
 
   has_many :user_accounts, :autosave => true, inverse_of: :user
@@ -75,7 +79,8 @@ class User < Clot::BaseDrop
     self.handle_name = auth.info.nickname if auth.provider == 'github' || auth.provider == 'hatena'
   end
   def password_required?
-    need_additional ? false : super
+    #need_additional ? false : super
+    false
   end
   def add_provider(auth)
     self.user_accounts.create(:provider => auth.provider, :uid => auth.uid.to_s,
