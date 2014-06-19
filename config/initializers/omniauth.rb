@@ -18,6 +18,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :hatena,
   ENV['HATENA_CONSUMER_KEY'],
   ENV['HATENA_CONSUMER_SECRET'],
-  :scope => "read_public"
+  {
+    :scope => "read_public",
+    :client_options => {:authorize_path => '/oauth/authenticate'}
+  }
 
 end

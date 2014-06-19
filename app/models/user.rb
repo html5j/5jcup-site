@@ -5,7 +5,6 @@ class User < Clot::BaseDrop
   User::SOCIALS = {
     twitter: 'Twitter',
     github: 'Github',
-    hatena: 'はてな'
   }
 
   has_many :user_accounts, :autosave => true, inverse_of: :user
