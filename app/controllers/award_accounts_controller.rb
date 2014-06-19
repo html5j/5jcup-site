@@ -48,7 +48,7 @@ class AwardAccountsController < ApplicationController
     dl_count = Hash.new(0)
     material_content = current_site.content_types.where(slug: 'materials').first
     materials = material_content.entries.where(award_id: @award_account._id)
-    downloads = Dl.in(material: materials.map(&:material_name))
+    downloads = Dl.in(material: materials.map(&:_slug))
     downloads.each do |dl|
       dl.set_material_object(material_content)
       @downloads << dl
