@@ -100,9 +100,22 @@ class WorksController < ApplicationController
     @page ||= self.locomotive_page('/worksshow')
     work = Work.find(params['id'])
     editable = (work.user == current_user)
-    work =  nil if (work.user != current_user && !work.published)
-    awards = []
     award_content = current_site.content_types.where(slug: 'awards').first
+    if (work.user != current_user && !work.published)
+      if session[:award_account].nil?
+        work =  nil 
+      else
+        session_award = award_content.entries.where("_slug.ja" => session[:award_account]).first
+        if !work.award_ids.include? session_award._id.to_s
+          work = nil
+        end
+      end
+    end
+    if work.nil?
+      redirect_to "/"
+      return
+    end
+    awards = []
     if (work != nil && !work.award_ids.nil?)
       work.award_ids.each{|id|
         awards << award_content.entries.find(id)
