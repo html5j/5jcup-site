@@ -1,0 +1,207 @@
+<%# 
+{% extends 'parent' %}
+{% block header %}
+{% csrf_meta %}
+{{ 'bxslider/jquery.bxslider.min.js' | javascript_tag }}"
+{{ 'bxslider/jquery.bxslider.css' | stylesheet_tag }}"
+   %>
+<script>
+  $( document ).ready(function(){
+    $("a[data-confirm]").click(function () {
+      if (confirm($(this).data("confirm"))){
+        $_this = $(this)
+        $.ajax({
+          url: this.href,
+          type: 'DELETE',
+          headers: {
+            'X-CSRF-Token': $("meta[name=csrf-token]").attr("content")
+          },
+          success: function(result) {
+            if (result['result'] == 'ok'){
+              location.href='/works/'
+            }else{
+              alert('削除できませんでした。');
+            }
+          },
+          error: function(result) {
+            alert('削除できませんでした');
+          }
+        });
+        return false
+      }else{
+        return false
+      }
+    });
+    $('.bxslider').bxSlider({
+      auto: true
+    });
+  });
+  </script>
+<%#
+{% endblock %}
+{% block main %}
+   %>
+<style>
+  .work-info  {
+    padding-top: 8px;
+    border-top: 1px solid lightgray;
+  }
+  .access-app {
+    border-bottom: 1px solid lightgray;
+  }
+  .access-app .button {
+    width: 16em;
+  }
+  .creators-info dd {
+    padding-left: 2em;
+  }
+  .members {
+    float: left;
+  }
+  .awards {
+    list-style-type: none;
+  }
+  pre.text {
+    font-family: sans-serif;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+  }
+  .description {
+    padding: 8px 0;
+  }
+</style>
+<main>
+  <div class='row' id="main-container">
+    <div class='large-12 columns'>
+      <h1>作品詳細</h1>
+      <section>
+        <h2><%= @work.title %></h2>
+        <% if @work.image1_url(:medium) or @work.image2_url(:medium) or @work.image3_url(:medium) %>
+        <ul class="bxslider">
+          <% if @work.image1_url(:medium) %><li><a href="<%= @work.image1_url(:medium) %>" target="_blank"><img src="<%= @work.image1_url(:medium) %>"/></a></li><% end %>
+          <% if @work.image2_url(:medium) %><li><a href="<%= @work.image2_url(:medium) %>" target="_blank"><img src="<%= @work.image2_url(:medium) %>"/></a></li><% end %>
+          <% if @work.image3_url(:medium) %><li><a href="<%= @work.image3_url(:medium) %>" target="_blank"><img src="<%= @work.image3_url(:medium) %>"/></a></li><% end %>
+        </ul>
+        <% end %>
+        <p class="access-app">
+          <% if @work.url != '' %>
+          <a href="<%= @work.url %>" class="button" target="_blank">作品を見る</a>
+          <% elsif @work.file_url != '' %>
+          <a href="<%= @work.file_url %>" class="button" target="_blank">作品をダウンロード</a>
+          <% end %>
+        </p>
+        <p class="description">
+          <%= @work.description %>
+        </p>
+        <dl class="work-info row">
+          <dt class="columns large-3">制作者の情報</dt>
+          <dd class="columns large-9">
+            <dl class="creators-info">
+              <dt>作者（チーム名）</dt>
+              <dd>
+                <%= @work.handle_name %>
+	            <% unless @work.twitter_id.blank? %>
+                (<a href="http://twitter.com/<%= @work.twitter_id %>">@<%= @work.twitter_id %></a>)
+                <% end %>
+              </dd>
+              <% if @work.members.size > 0 %>
+              <dt>メンバー</dt>
+              <% @work.members.each do |member| %>
+              <dd class="members"><%= member %></dd>
+	      <% end %>
+              <% end %>
+            </dl>
+          </dd>
+        </dl>
+        <dl class="work-info row">
+          <dt class="columns large-3">エントリー済みの賞</dt>
+          <dd class="columns large-9">
+            <ul class="awards">
+              <% @awards.each do |award| %>
+              <li>
+                <a href="/awards/<%= award._slug %>" target="_blank"><%= award.title %></a>
+              </li>
+              <% end %>
+            </ul>
+          </dd>
+        </dl>
+        <% unless @work.technical_appeal_point.blank? %>
+        <dl class="work-info row">
+          <dt class="columns large-3">技術的なアピールポイント</dt>
+          <dd class="columns large-9">
+            <pre class="text"><%= @work.technical_appeal_point %></pre>
+          </dd>
+        </dl>
+        <% end %>
+        <% unless @work.plan_appeal_point.blank? %>
+        <dl class="work-info row">
+          <dt class="columns large-3">企画上のアピールポイント</dt>
+          <dd class="columns large-9">
+            <pre class="text"><%= @work.plan_appeal_point %></pre>
+          </dd>
+        </dl>
+        <% end %>
+        <% unless @work.remarks.blank? %>
+        <dl class="work-info row">
+          <dt class="columns large-3">自由記入欄</dt>
+          <dd class="columns large-9">
+            <pre class="text"><%= @work.remarks %></pre>
+          </dd>
+        </dl>
+        <% end %>
+</section>
+<%# 
+<div class="work">
+  <dl id="work_info">
+    <dt>プレビュー画像</dt>
+    <dd>
+    </dd>
+    <dt>ハンドルネーム</dt>
+    <dd>{{work.handle_name | escape}}</dd>
+    <dt>ツイッターアカウント</dt>
+    <dd>{{work.twitter_id | escape}}</dd>
+    <dt>メンバー</dt>
+    <dd>{{work.members | join:","| escape}}</dd>
+    
+    <dt>作品タイトル</dt>
+    <dd>{{work.title | escape}}</dd>
+    
+    <dt>作品詳細</dt>
+    <dd>{{work.description | escape}}</dd>
+    <dt>エントリー済みの賞</dt>
+    <dd>
+      {% for award in awards %}
+      <li><a href="/awards/{{award._slug}}" target="_blank">{{award.title}}</a></li>
+      {% endfor %}
+    </dd>
+    <dt>作品URL</dt>
+    <dd>{% if work.url %}<a href="{{work.url}}" target="_blank">{{work.url}}</a>{% else %}なし{% endif %}</dd>
+    <dt>アプリケーションのファイル</dt>
+    <dd>{% if file_url %}<a href="{{file_url}}" target="_blank">{{work.file}}</a>{% else %}なし{% endif %}</dd>
+    <dt>技術的なアピールポイント</dt>
+    <dd>{{work.technical_appeal_point | escape}}</dd>
+    <dt>企画上のアピールポイント</dt>
+    <dd>{{work.plan_appeal_point | escape}}</dd>
+    <dt>自由記入欄</dt>
+    <dd>{{work.remarks | escape}}</dd>
+    <dt>公開、非公開</dt>
+    <dd>
+      {% if work.published %}
+      公開中
+      {% else %}
+      非公開
+      {% endif %}
+    </dd>
+  </dl>
+  {% if editable %}
+  <a href="/works/{{params.id}}/edit" class="button">編集する</a>
+  <a href="/works/{{params.id}}" data-method="destroy" data-confirm="本当に削除していいですか？" data-value="{{params.id}}" class="button alert">削除</a>
+  {% endif %}
+</div>
+</div>
+{% endcomment %}
+    #>
+</div>
+</main>
+<%# {% endblock %} %>

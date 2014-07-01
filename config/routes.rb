@@ -19,6 +19,7 @@ Html5jcup::Application.routes.draw do
   match "/accounts/delete_user" => "accounts#delete_user", :as => :user
   match "/accounts/show_works" => "accounts#show_works", :as => :work
   match "/accounts/edit_work" => "accounts#edit_work", :as => :work
+  match "/accounts/show_work" => "accounts#show_work", :as => :work
   match "/accounts/update_work" => "accounts#update_work", :as => :work
   match "/accounts/delete_work" => "accounts#delete_work", :as => :work
   match "/accounts/show_downloads" => "accounts#show_downloads", :as => :Dl

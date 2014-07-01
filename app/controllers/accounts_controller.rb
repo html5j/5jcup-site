@@ -87,6 +87,18 @@ class AccountsController < ApplicationController
     end
   end
 
+  def show_work
+    @work = Work.where(_id: params["_id"]).first
+    _awards = []
+    award_content = current_site.content_types.where(slug: 'awards').first
+    if (@work != nil && !@work.award_ids.nil?)
+      @work.award_ids.each{|id|
+        _awards << award_content.entries.find(id)
+      }
+    end
+    @awards = _awards
+  end
+  
   def edit_work
     @work = Work.where(_id: params["_id"]).first
     @awards = awards
