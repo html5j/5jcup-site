@@ -105,7 +105,7 @@
                 (<a href="http://twitter.com/<%= @work.twitter_id %>">@<%= @work.twitter_id %></a>)
                 <% end %>
               </dd>
-              <% if @work.members.size > 0 %>
+              <% if @work.members and @work.members.size > 0 %>
               <dt>メンバー</dt>
               <% @work.members.each do |member| %>
               <dd class="members"><%= member %></dd>
