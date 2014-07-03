@@ -44,6 +44,28 @@ class Work < Clot::BaseDrop
     awards_name = @awards.map(&:title).join(', ')
     awards_name
   end
+
+  def as_csv
+    attr = Hash.new
+    attributes.each do |key, value|
+      attr[key] = value
+    end
+    awards = Array.new
+    unless award_ids.blank?
+      award_ids.each do |award_id|
+        awards << @awards.find(award_id).title
+      end
+    end
+    attr["awards"] = awards
+    attr["file"] = file_url
+    attr["image1"] = image1_url
+    attr["image2"] = image2_url
+    attr["image3"] = image3_url
+    attr["user"] = user.name
+    attr.delete("award_ids")
+    attr.delete("user_id")
+    attr
+  end
   
   validates :image1,
     :file_size => {

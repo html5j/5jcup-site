@@ -22,6 +22,7 @@ Html5jcup::Application.routes.draw do
   match "/accounts/show_work" => "accounts#show_work", :as => :work
   match "/accounts/update_work" => "accounts#update_work", :as => :work
   match "/accounts/delete_work" => "accounts#delete_work", :as => :work
+  match "/accounts/download_works_csv" => "accounts#download_works_csv", :as => :download_works_csv, :default => {:format => :csv}
   match "/accounts/show_downloads" => "accounts#show_downloads", :as => :Dl
   match "/works/all" => "works#all"
   match "/users/deauth/:provider" => 'user_accounts#deauth'

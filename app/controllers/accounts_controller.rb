@@ -123,6 +123,19 @@ class AccountsController < ApplicationController
     @work.destroy
     redirect_to :action => :show_works
   end
+
+  def download_works_csv
+    works = Work.all
+    @works = Array.new
+    award_content = current_site.content_types.where(slug: 'awards').first
+    works.each do |work|
+      work.awards = award_content.entries
+      @works << work
+    end
+    respond_to do |format|
+      format.csv { render :csv => @works }
+    end
+  end
   
   def show_downloads
     downloads = Dl.all

@@ -11,6 +11,9 @@
   <span><%= link_to "ユーザ一覧", :controller => :accounts, :action => :show %> / 作品一覧 / <%= link_to "ダウンロード", :controller => :accounts, :action => :show_downloads %></span>
 </div>
 
+<h2>応募作品一覧ダウンロード</h2>
+<span><%= link_to "CSVダウンロード", download_works_csv_path(:format => :csv) %></span>
+
 <h2>応募作品一覧</h2>
 <div>
   <table>
