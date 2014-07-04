@@ -39,6 +39,7 @@ class Work < Clot::BaseDrop
   paginates_per 10
   
   attr :awards, true
+  attr :award_content, true
 
   def awards_name
     awards_name = @awards.map(&:title).join(', ')
@@ -50,13 +51,11 @@ class Work < Clot::BaseDrop
     attributes.each do |key, value|
       attr[key] = value
     end
-    awards = Array.new
+    _awards = nil
     unless award_ids.blank?
-      award_ids.each do |award_id|
-        awards << @awards.find(award_id).title
-      end
+      _awards = @award_content.entries.in(_id: award_ids).map(&:title)
     end
-    attr["awards"] = awards
+    attr["awards"] = _awards
     attr["file"] = file_url
     attr["image1"] = image1_url
     attr["image2"] = image2_url

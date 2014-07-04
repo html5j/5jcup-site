@@ -129,7 +129,7 @@ class AccountsController < ApplicationController
     @works = Array.new
     award_content = current_site.content_types.where(slug: 'awards').first
     works.each do |work|
-      work.awards = award_content.entries
+      work.award_content = award_content
       @works << work
     end
     respond_to do |format|
