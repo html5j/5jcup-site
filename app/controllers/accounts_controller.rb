@@ -125,7 +125,8 @@ class AccountsController < ApplicationController
   end
 
   def download_works_csv
-    works = Work.all
+    page = params["page"].blank? ? 1 : params["page"]
+    works = Work.order_by(:_id.asc).page(page).per(100)
     @works = Array.new
     award_content = current_site.content_types.where(slug: 'awards').first
     works.each do |work|
