@@ -16,7 +16,7 @@ class Array
       end
       out << values.to_csv(options)
     end
-    out.encode(Encoding::SJIS)
+    out
   end
 end
 
