@@ -27,9 +27,9 @@ module Locomotive
 
       def show
         if (current_user)
-          render_locomotive_page(nil, {'username' => current_user.name, 'awards' => awards, 'userid' => current_user.id.to_s, 'award_search_object' => award_search_object, 'new_works' => new_works})
+          render_locomotive_page(nil, {'username' => current_user.name, 'awards' => awards, 'userid' => current_user.id.to_s, 'award_search_object' => award_search_object, 'new_works' => new_works, 'random_works' => random_works})
         else
-          render_locomotive_page(nil, {'awards'=> awards, 'award_search_object' => award_search_object, 'new_works' => new_works})
+          render_locomotive_page(nil, {'awards'=> awards, 'award_search_object' => award_search_object, 'new_works' => new_works, 'random_works' => random_works})
         end
       end
 
